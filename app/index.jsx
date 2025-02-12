@@ -10,15 +10,14 @@ export default function App() {
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: '100%'}}> 
-        <View className="w-full items-center min-h-[85vh] px-4">
-        {/* Maybe add justify center  */}
+        <View className="w-full justify-center items-center min-h-[85vh] px-4">
           <Image
             source={images.logo}
             className="w-[340px] h-[294px]"
             resizeMode="contain" 
           />
 
-          <View className="relative mt-3">
+          <View className="relative">
             <Text className="text-5xl text-black font-pbold text-center">
               Track
             </Text>
