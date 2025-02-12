@@ -6,11 +6,13 @@ import icons from '../constants/icons';
 const FormField = ({ title, value, placeholder, handleChangeText, otherStyles, ...props }) => {
 
     const [showPassword, setShowPassword] = useState(false)
+    const [isFocused, setIsFocused] = useState(false)
+
   return (
     <View className={`space-y-2 ${otherStyles}`}>
       <Text className="text-base text-black font-pmedium">{ title }</Text>
 
-      <View className="border-2 border-gray-400 w-full h-16 px-4 bg-gray-300 rounded-2xl items-center flex-row">
+      <View className={`border-2  w-full h-16 px-4 bg-gray-300 rounded-2xl items-center flex-row ${isFocused ? 'border-quaternary' : 'border-gray-400'}`}>
         <TextInput 
             className="flex-1 text-black font-psemibold text-base"
             value={value}
@@ -18,6 +20,8 @@ const FormField = ({ title, value, placeholder, handleChangeText, otherStyles, .
             placeholderTextColor=""
             onChangeText={handleChangeText}
             secureTextEntry={title === 'Password' && !showPassword}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
         />
         {title === 'Password' && (
             <TouchableOpacity
