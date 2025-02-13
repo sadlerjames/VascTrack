@@ -8,6 +8,8 @@ import images from '../../constants/images';
 import FormField from "../../components/FormField";
 import CustomButton from "../../components/CustomButton";
 
+import { createUser } from '../../lib/authentication';
+
 const SignUp = () => {
   const [form, setForm] = useState({
     firstName: '',
@@ -20,7 +22,8 @@ const SignUp = () => {
 const [isSubmitting, setIsSubmitting] = useState(false)
 
 const submit = () => {
-
+  console.log("running");
+  createUser("test@email.com", "Test123!", "Test", "Test1");
 }
 
   return (
