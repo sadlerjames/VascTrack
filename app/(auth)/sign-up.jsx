@@ -3,14 +3,18 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Link, router } from 'expo-router';
 
-import images from '../../constants/images';
+import { createUser } from '../../lib/authentication';
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 import FormField from "../../components/FormField";
 import CustomButton from "../../components/CustomButton";
 
-import { createUser } from '../../lib/authentication';
+import images from '../../constants/images';
 
 const SignUp = () => {
+  const { setUser, setisLoggedIn } = useGlobalContext();
+  
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -19,7 +23,6 @@ const SignUp = () => {
     confirmPassword: ''
   })
 
-const [isSubmitting, setIsSubmitting] = useState(false)
 
 const submit = async () => {
   if(!form.email || !form.password || !form.firstName || !form.lastName) {
@@ -31,6 +34,8 @@ const submit = async () => {
   try {
 
     const result = await createUser(form.email, form.password, form.firstName, form.lastName);
+    setUser(result);
+    setisLoggedIn(true);
 
     router.replace('/home');
     
