@@ -1,7 +1,7 @@
-import { View, Text, ScrollView, Image, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Text, ScrollView, Image, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 
 import images from '../../constants/images';
 
@@ -21,9 +21,26 @@ const SignUp = () => {
 
 const [isSubmitting, setIsSubmitting] = useState(false)
 
-const submit = () => {
-  console.log("running");
-  createUser("test@email.com", "Test123!", "Test", "Test1");
+const submit = async () => {
+  if(!form.email || !form.password || !form.firstName || !form.lastName) {
+    Alert.alert('Error', 'Please fill in all the fields!');
+  }
+
+  setIsSubmitting(true);
+
+  try {
+
+    const result = await createUser(form.email, form.password, form.firstName, form.lastName);
+
+    router.replace('/home');
+    
+  } catch (error) {
+    Alert.alert('Error', error.message);
+  } finally {
+    setIsSubmitting(false); // loading has finished
+  }
+
+  
 }
 
   return (
