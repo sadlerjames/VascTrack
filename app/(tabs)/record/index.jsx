@@ -3,8 +3,8 @@ import React from 'react'
 import { Redirect, router } from 'expo-router'
 import { SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context'
 
-import WaveHeader from '../../components/Header'
-import CustomButton from '../../components/CustomButton'
+import WaveHeader from '../../../components/Header'
+import CustomButton from '../../../components/CustomButton'
 
 const Record = () => {
   return (
@@ -25,14 +25,14 @@ const Record = () => {
 
               <CustomButton
                 title="Manage your Medication"
-                handlePress={() => router.push('/sign-in')}
+                handlePress={() => router.push('/record/medication')}
                 containerStyles="w-80 h-40 bg-secondary"
                 textStyles="text-2xl"
               />  
 
               <CustomButton
                 title="Record your Energy Levels"
-                handlePress={() => router.push('/sign-in')}
+                handlePress={() => router.push('/record/energy')}
                 containerStyles="w-80 h-40 bg-secondary"
                 textStyles="text-2xl"
               />  
