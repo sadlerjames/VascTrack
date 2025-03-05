@@ -1,12 +1,11 @@
 import { View, Text, StatusBar } from 'react-native'
 import React from 'react'
-import { Redirect, router } from 'expo-router'
 import { SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context'
 
-import WaveHeader from '../../components/Header'
-import CustomButton from '../../components/CustomButton'
+import WaveHeader from '../../../components/Header'
+import CustomButton from '../../../components/CustomButton'
 
-const Record = () => {
+const Symptoms = () => {
   return (
     <SafeAreaProvider>
       <StatusBar backgroundColor="#ADE2FF" barStyle="dark-content" />
@@ -18,24 +17,12 @@ const Record = () => {
             <View className="p-2">
               <CustomButton
                 title="Track your Symptoms"
-                handlePress={() => router.push('/record/symptoms')}
+                // handlePress={submit}
                 containerStyles="w-80 h-40 bg-secondary"
                 textStyles="text-2xl"
               />
 
-              <CustomButton
-                title="Manage your Medication"
-                handlePress={() => router.push('/sign-in')}
-                containerStyles="w-80 h-40 bg-secondary"
-                textStyles="text-2xl"
-              />  
 
-              <CustomButton
-                title="Record your Energy Levels"
-                handlePress={() => router.push('/sign-in')}
-                containerStyles="w-80 h-40 bg-secondary"
-                textStyles="text-2xl"
-              />  
             </View>
 
           </View>
@@ -47,4 +34,4 @@ const Record = () => {
   )
 }
 
-export default Record
+export default Symptoms

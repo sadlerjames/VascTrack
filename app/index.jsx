@@ -43,6 +43,12 @@ export default function App() {
             handlePress={() => router.push('/sign-in')}
             containerStyles="w-full mt-7"
           />
+          {/* Skip the sign in for testing */}
+          <CustomButton
+            title="Home"
+            handlePress={() => router.push('/home')}
+            containerStyles="w-full mt-7"
+          />
             
         </View>
 

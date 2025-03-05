@@ -8,21 +8,19 @@ const Home = () => {
   return (
 
     <SafeAreaProvider>
-    
       <StatusBar backgroundColor="#ADE2FF" barStyle="dark-content" />
 
-        <SafeAreaView>
-          <FlatList
-            data={[{id: 1}, {id: 2}, {id: 3}]}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({item}) => (
-              <Text className="text-3xl">{item.id}</Text>
-            )}
-            ListHeaderComponent={() => (<WaveHeader />)}
-          />
+        <SafeAreaView style={{flex:1}}>
+          <WaveHeader />
+          <View style={{ flex: 1 }}>
+            <View className="items-center justify-center w-full h-full" >
+              <Text>Dashboard</Text>
 
+            </View>
+            
+          </View>
+          
         </SafeAreaView>
-
     </SafeAreaProvider>
   )
 }
