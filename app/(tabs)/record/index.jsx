@@ -26,14 +26,14 @@ const Record = () => {
               <CustomButton
                 title="Manage your Medication"
                 handlePress={() => router.push('/record/medication')}
-                containerStyles="w-80 h-40 bg-secondary"
+                containerStyles="w-80 h-40 bg-secondary mt-3"
                 textStyles="text-2xl"
               />  
 
               <CustomButton
                 title="Record your Energy Levels"
                 handlePress={() => router.push('/record/energy')}
-                containerStyles="w-80 h-40 bg-secondary"
+                containerStyles="w-80 h-40 bg-secondary mt-3"
                 textStyles="text-2xl"
               />  
             </View>
