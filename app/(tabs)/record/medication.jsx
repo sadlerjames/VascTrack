@@ -2,6 +2,7 @@ import { View, Text, FlatList, StatusBar, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context'
 import { Dropdown } from 'react-native-element-dropdown'
+import { Link, router } from 'expo-router';
 
 import WaveHeader from '../../../components/Header'
 import CustomButton from '../../../components/CustomButton'
@@ -10,7 +11,7 @@ const Medication = () => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
-  const data = [
+  const dropdownData = [
     { label: 'Paracetamol', value: '1' },
     { label: 'Ibuprofen', value: '2' },
     { label: 'Aspirin', value: '3' },
@@ -21,26 +22,24 @@ const Medication = () => {
     { label: 'Loratadine', value: '8' },
 ];
 
-
   return (
     <SafeAreaProvider>
       <StatusBar backgroundColor="#ADE2FF" barStyle="dark-content" />
-
         <SafeAreaView style={{flex:1}}>
           <WaveHeader />
           <View style={{ flex: 1 }}>
             <View className="items-center justify-center w-full h-full" >
-              <View className="bg-primary rounded-xl justify-center items-center py-6 px-1">
-                <Text className="font-pbold text-2xl">What medication did you take?</Text>
+              <View className="bg-primary w-full rounded-3xl justify-center items-center py-6 px-1">
+                <Text className="font-pbold text-2xl p-3">What medication did you take?</Text>
 
-                <View className="p-4">
+                <View className="p-4 w-full">
                   <Dropdown
                     style={[ styles.dropdown, isFocus && { borderColor: 'blue' }]}
                     placeholderStyle={styles.placeholderStyle}
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
-                    data={data}
+                    data={dropdownData}
                     search
                     maxHeight={300}
                     labelField="label"
@@ -54,16 +53,30 @@ const Medication = () => {
                       setValue(item.value);
                       setIsFocus(false);
                     }}
+
                   />
                 </View>
 
+             
                 <CustomButton
-                title="Record Dosage"
-                handlePress={() => router.push('/record/energy')}
-                containerStyles="w-80 bg-secondary mt-3"
-                textStyles="text-2xl"
-              />  
+                  title="Record Dosage"
+                  handlePress={() => router.push('/record/energy')}
+                  containerStyles="w-full bg-secondary mt-3"
+                  textStyles="text-2xl"
+                /> 
+               
 
+                
+
+                <View className="justify-center pt-5 flex-row gap-2">
+                  <Text className="font-psemibold text-lg">Medication not listed?</Text>
+                  <Link href="/sign-in" className="font-pbold text-lg text-quaternary">Add</Link>
+                </View>
+                   
+              </View>
+
+              <View className="bg-primary rounded-xl justify-center items-center py-6 px-1 mt-5">
+                <Text className="font-pbold text-2xl">Current Reminders</Text>
 
                 
               </View>
@@ -82,18 +95,13 @@ export default Medication
 
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    padding: 16,
-    
-  },
   dropdown: {
-    height: 50,
+    height: 55,
     borderColor: 'gray',
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderRadius: 8,
-    paddingHorizontal: 8,
-    width: 330
+    paddingHorizontal: 9,
+    width: '100%'
   },
   icon: {
     marginRight: 5,
