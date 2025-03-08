@@ -3,13 +3,13 @@ import React from "react";
 import { View, Text, Pressable } from "react-native";
 
 const ProgressBar = ({ selected, setSelected }) => {
-  const options = [0, 1, 2, 3, 4, 5];
+  const options = [1, 2, 3, 4, 5, 6];
 
   return (
     <>
-      <View className="py-5">
+      <View className="py-5 items-center">
         {/* Bar */}
-        <View className="w-full h-6 bg-gray-300 rounded-full overflow-hidden">
+        <View className="w-11/12 h-6 bg-gray-300 rounded-full overflow-hidden">
           <View
             className="h-full bg-quaternary"
             style={{ width: `${(selected - 1) / (options.length - 1) * 100}%` }}
@@ -17,7 +17,7 @@ const ProgressBar = ({ selected, setSelected }) => {
         </View>
         
         {/* Buttons and Labels */}
-        <View className="w-full flex-row justify-between py-3">
+        <View className="w-11/12 flex-row justify-between pt-3">
         {options.map((option) => (
           <View key={option} className="items-center">
             {/* Button */}
@@ -27,20 +27,16 @@ const ProgressBar = ({ selected, setSelected }) => {
                 selected === option ? "bg-quaternary" : "bg-gray-300"
               }`}
             >
-              <Text className="text-white font-semibold">{option}</Text>
+              <Text className="text-white font-semibold">{option - 1}</Text>
             </Pressable>
-
-            {/* Label for edge cases */}
-            {option === 0 && (
-              <Text className="mt-2 text-gray-600">No Impact</Text>
-            )}
-
-            {option === 5 && (
-              <Text className="mt-2 text-gray-600">Severe Impact</Text>
-            )}
-
           </View>
         ))}
+        </View>
+
+        <View className="w-full flex-row justify-between pt-2">
+          <Text className=" text-gray-600 font-plight text-center">No{"\n"}Impact</Text>
+          <Text className=" text-gray-600 font-plight text-center">Severe{"\n"}Impact</Text>
+
         </View>
       </View>
     </>
