@@ -4,8 +4,7 @@ import { SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context'
 
 import WaveHeader from '../../../components/Header'
 import ProgressBar from '../../../components/ProgressBar'
-
-const options = [1, 2, 3, 4, 5, 6];
+import CustomButton from '../../../components/CustomButton'
 
 const Energy = () => {
 
@@ -20,12 +19,17 @@ const Energy = () => {
 
             <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
               <Text className="text-2xl font-pbold text-center">How much energy do you have?</Text>
-              <Text className="text-gray-600">This is the first card.</Text>
-
               <ProgressBar selected={selected} setSelected={setSelected} />
-            
-            </View>
+              <View className="items-center">
+                <CustomButton
+                  title="Record"
+                  handlePress={() => router.push('/record/energy')}
+                  containerStyles="w-80 bg-secondary mt-3"
+                  textStyles="text-2xl"
+                />  
+              </View>
 
+            </View>
           </View>
           
         </SafeAreaView>
