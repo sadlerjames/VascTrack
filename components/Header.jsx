@@ -1,19 +1,21 @@
 import { View, Text, Dimensions, Image } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
+import { useGlobalContext } from "../context/GlobalProvider";
 import images from "../constants/images";
 
 const { width, height } = Dimensions.get("window");
 const dynamicMarginTop = -height * 0.04;
 
 const WaveHeader = () => {
+  const { user } = useGlobalContext();
   return (
     <View>
       {/* Header Content */}
       <View className="justify-between items-start flex-row" style={{ backgroundColor: "#ADE2FF", padding: 20 }}>
         <View>
           <Text className="font-pmedium text-m">Welcome back</Text>
-          <Text className="font-psemibold text-3xl">James</Text>
+          <Text className="font-psemibold text-3xl">{user?.firstName || "User"}</Text>
         </View>
 
         <View className="mt-2 mr-8">
