@@ -9,6 +9,7 @@ module.exports = {
         secondary: '#ADE2FF',
         tertiary: '#4DA6FF',
         quaternary: '#1F8FFF',
+        quintet: '#80C6FF',
         black: {
           DEFAULT: "#000",
           100: "#1E1E2D",

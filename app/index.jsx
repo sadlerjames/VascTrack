@@ -41,13 +41,13 @@ export default function App() {
           <CustomButton
             title="Continue with Email"
             handlePress={() => router.push('/sign-in')}
-            containerStyles="w-full mt-7"
+            containerStyles="w-full mt-7 bg-tertiary"
           />
           {/* Skip the sign in for testing */}
           <CustomButton
             title="Home"
             handlePress={() => router.push('/home')}
-            containerStyles="w-full mt-7"
+            containerStyles="w-full mt-7 bg-tertiary"
           />
             
         </View>

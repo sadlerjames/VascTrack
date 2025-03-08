@@ -77,7 +77,7 @@ const submit = async () => {
           <CustomButton
             title="Sign In"
             handlePress={submit}
-            containerStyles="mt-7"
+            containerStyles="mt-7 bg-tertiary"
             isLoading={isSubmitting}
           />
 
