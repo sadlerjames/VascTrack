@@ -34,10 +34,12 @@ const submit = async () => {
   try {
 
     const result = await createUser(form.email, form.password, form.firstName, form.lastName);
-    setUser(result);
-    setisLoggedIn(true);
-
-    router.replace('/home');
+    
+    if (result) {
+      setUser(result);
+      setisLoggedIn(true);
+      router.replace('/home');
+    }
     
   } catch (error) {
     Alert.alert('Error', error.message);
