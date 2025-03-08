@@ -2,12 +2,12 @@
 import React from "react";
 import { View, Text, Pressable } from "react-native";
 
-const ProgressBar = ({ selected, setSelected }) => {
+const ProgressBar = ({ selected, setSelected, containerStyle }) => {
   const options = [1, 2, 3, 4, 5, 6];
 
   return (
     <>
-      <View className="py-5 items-center">
+      <View className={`items-center ${containerStyle}`}>
         {/* Bar */}
         <View className="w-11/12 h-6 bg-gray-300 rounded-full overflow-hidden">
           <View

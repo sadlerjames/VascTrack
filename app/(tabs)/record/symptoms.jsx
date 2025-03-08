@@ -1,6 +1,7 @@
 import { View, Text, StatusBar, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context'
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import WaveHeader from '../../../components/Header'
 import ProgressBar from '../../../components/ProgressBar'
@@ -24,6 +25,15 @@ const Energy = () => {
 
   //Progress Bar
   const [selected, setSelected] = useState(0);
+
+  // Date + Time Picker
+  const [date, setDate] = useState(new Date());
+
+  const onChange = (e, selectedDate) => {
+    setDate(selectedDate);
+  };
+
+
   return (
     <SafeAreaProvider>
       <StatusBar backgroundColor="#ADE2FF" barStyle="dark-content" />
@@ -34,6 +44,7 @@ const Energy = () => {
 
             <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
               <Text className="text-2xl font-pbold text-center">What are you feeling today?</Text>
+              
               <View className="pt-2">
                 <Text className="font-pbold text-lg">Symptom:</Text>
                 <View className="pt-3">
@@ -47,11 +58,33 @@ const Energy = () => {
                         searchPlaceholder="Search..."
                     />
                 </View>
+              </View>
 
+              <View className="pt-4">
+                <Text className="font-pbold text-lg">Severity:</Text>
+                <ProgressBar selected={selected} setSelected={setSelected} containerStyle="py-3" />
               </View>
-              <View>
-                <ProgressBar selected={selected} setSelected={setSelected} />
+
+              <View className="pt-4">
+                <Text className="font-pbold text-lg">Date & Time Occurred:</Text>
+                <View className="w-full flex-row justify-start py-2">
+                    <DateTimePicker
+                        value={date}
+                        mode={"date"}
+                        is24Hour={true}
+                        onChange={onChange}
+                    />
+                    <DateTimePicker
+                        value={date}
+                        mode={"time"}
+                        is24Hour={true}
+                        onChange={onChange}
+                    />
+                </View>
+                
+                
               </View>
+
               <View className="items-center">
                 <CustomButton
                   title="Record"

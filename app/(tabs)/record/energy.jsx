@@ -19,7 +19,7 @@ const Energy = () => {
 
             <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
               <Text className="text-2xl font-pbold text-center">How much energy do you have?</Text>
-              <ProgressBar selected={selected} setSelected={setSelected} />
+              <ProgressBar selected={selected} setSelected={setSelected} containerStyle="pt-5 pb-3" />
               <View className="items-center">
                 <CustomButton
                   title="Record"
