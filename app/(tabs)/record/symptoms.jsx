@@ -82,7 +82,7 @@ const Energy = () => {
                     <CustomButton
                         title="Record"
                         handlePress={() => router.push('/record/energy')}
-                        containerStyles="w-80 bg-secondary mt-3"
+                        containerStyles="w-80 bg-tertiary mt-3"
                         textStyles="text-2xl"
                     />  
                 </View>
