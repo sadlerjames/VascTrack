@@ -61,8 +61,6 @@ const Symptoms = () => {
             selectedTime.getMinutes()
         );
 
-        console.log(finalDateTime);
-
         // Call Firestore function to save data
         await recordSymptom(user.uid, dropdownValue, barSelected-1, finalDateTime);
 
