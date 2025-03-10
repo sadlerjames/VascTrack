@@ -2,11 +2,12 @@ import { View, Text, Alert } from 'react-native'
 import React, { useState } from 'react'
 import ScreenWrapper from '../../../components/ScreenWrapper'
 
+import { recordEnergy } from '../../../lib/recording';
+import { useGlobalContext } from '../../../context/GlobalProvider';
+
 import ProgressBar from '../../../components/ProgressBar'
 import CustomButton from '../../../components/CustomButton'
 
-import { recordEnergy } from '../../../lib/recording';
-import { useGlobalContext } from '../../../context/GlobalProvider';
 
 const Energy = () => {
   // Get user
@@ -24,7 +25,7 @@ const Energy = () => {
         }
 
         // Call Firestore function to save data
-        await recordEnergy(user.uid, barSelected);
+        await recordEnergy(user.uid, barSelected-1);
 
         Alert.alert("Success", "Energy recorded successfully!"); 
     } catch (error) {

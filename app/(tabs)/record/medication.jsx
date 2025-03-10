@@ -1,14 +1,20 @@
-import { View, Text } from 'react-native'
+import { View, Text, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { router, Link } from 'expo-router';
+
+import { recordMedication } from '../../../lib/recording';
+import { useGlobalContext } from '../../../context/GlobalProvider';
 
 import ScreenWrapper from '../../../components/ScreenWrapper'
 import CustomButton from '../../../components/CustomButton'
 import CustomDropdown from '../../../components/CustomDropdown'
 
-const Energy = () => {
+const Medication = () => {
+  // Get user
+  const { user } = useGlobalContext();
+
   // Dropdown
-  const [value, setValue] = useState(null);
+  const [dropdownValue, setDropdownValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const data = [
     { label: "Paracetamol", value: "1" },
@@ -21,6 +27,24 @@ const Energy = () => {
     { label: "Loratadine", value: "8" },
   ];
 
+  // Submit to DB to store
+    const submit = async () => {
+      try {
+          if (!user) throw new Error("User not logged in");
+          if (!dropdownValue) {
+              Alert.alert("Error", "Please choose a medication");
+              return;
+          }
+  
+          // Call Firestore function to save data
+          await recordMedication(user.uid, dropdownValue);
+  
+          Alert.alert("Success", "Medication successfully recorded!"); 
+      } catch (error) {
+          Alert.alert("Error", error.message);
+      }
+    };
+
   return (
     <ScreenWrapper>
         <View className="flex-1 items-center justify-center">
@@ -30,8 +54,8 @@ const Energy = () => {
                 
                 <View className="pt-5 pb-4">
                     <CustomDropdown
-                        value={value}
-                        setValue={setValue}
+                        value={dropdownValue}
+                        setValue={setDropdownValue}
                         isFocus={isFocus}
                         setIsFocus={setIsFocus}
                         data={data}
@@ -48,7 +72,7 @@ const Energy = () => {
                 <View className="items-center">
                     <CustomButton
                         title="Record"
-                        handlePress={() => router.push('/record/energy')}
+                        handlePress={submit}
                         containerStyles="w-80 bg-tertiary mt-3"
                         textStyles="text-2xl"
                     />  
@@ -60,4 +84,4 @@ const Energy = () => {
   )
 }
 
-export default Energy
+export default Medication
