@@ -1,14 +1,16 @@
-import { View, Text, Alert } from 'react-native'
+import { View, Text, Alert, TextInput } from 'react-native'
 import { Link, router } from 'expo-router';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import ScreenWrapper from '../../../components/ScreenWrapper'
 import ProgressBar from '../../../components/ProgressBar'
 import CustomButton from '../../../components/CustomButton'
 import CustomDropdown from '../../../components/CustomDropdown'
+import FormField from '../../../components/FormField'
 
-import { recordSymptom } from '../../../lib/recording';
+import { recordSymptom, saveCustomSymptom } from '../../../lib/recording';
+import { fetchCustomSymptoms } from '../../../lib/fetch'
 import { useGlobalContext } from '../../../context/GlobalProvider';
 
 const Symptoms = () => {    
@@ -17,28 +19,53 @@ const Symptoms = () => {
   // Dropdown
   const [dropdownValue, setDropdownValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-  const data = [
-    { label: "Paracetamol", value: "1" },
-    { label: "Ibuprofen", value: "2" },
-    { label: "Aspirin", value: "3" },
-    { label: "Amoxicillin", value: "4" },
-    { label: "Metformin", value: "5" },
-    { label: "Atorvastatin", value: "6" },
-    { label: "Omeprazole", value: "7" },
-    { label: "Loratadine", value: "8" },
-  ];
+  const [customSymptoms, setCustomSymptoms] = useState([]);
+  const [newSymptom, setNewSymptom] = useState('');
 
-  //Progress Bar
+  // Progress Bar
   const [barSelected, setBarSelected] = useState(0);
 
   // Date + Time Picker
   const [selectedDate, setSelectedDate] = useState(new Date()); // Stores only date
   const [selectedTime, setSelectedTime] = useState(new Date()); // Stores only time
 
+  // Get users custom symptoms
+  useEffect(() => {
+    const loadCustomSymptoms = async () => {
+      if (!user) return;
+      try {
+        const fetchedSymptoms = await fetchCustomSymptoms(user.uid);
+        setCustomSymptoms(fetchedSymptoms);
+      } catch (error) {
+        console.error("Error loading custom symptoms:", error);
+      }
+    };
+    loadCustomSymptoms();
+  }, [user]);
+
+  const predefinedSymptoms = [
+    { label: "Headache", value: "Headache" },
+    { label: "Fatigue", value: "Fatigue" },
+    { label: "Nausea", value: "Nausea" },
+    { label: "Dizziness", value: "Dizziness" },
+    { label: "Cough", value: "Cough" },
+    { label: "Shortness of Breath", value: "Shortness of Breath" },
+    { label: "Chest Pain", value: "Chest Pain" },
+    { label: "Muscle Aches", value: "Muscle Aches" }
+  ];
+
+  const combinedSymptoms = [
+    ...predefinedSymptoms,
+    ...customSymptoms.map(symptom => ({ label: symptom, value: symptom })),
+    { label: "Other", value: "other" } // Allows user to enter a custom symptom
+  ];
+
+  // User changes the date
   const onDateChange = (event, newDate) => {
     if (newDate) setSelectedDate(newDate);
   };
 
+  // User changes the time
   const onTimeChange = (event, newTime) => {
     if (newTime) setSelectedTime(newTime);
   };
@@ -47,12 +74,20 @@ const Symptoms = () => {
   const submit = async () => {
     try {
         if (!user) throw new Error("User not logged in");
-        if (!dropdownValue) {
-            Alert.alert("Error", "Please select a symptom.");
+
+        let finalSymptom = dropdownValue;
+        if (dropdownValue === "other") {
+            if (!newSymptom.trim()) {
+            Alert.alert("Error", "Please enter a symptom.");
             return;
+            }
+            finalSymptom = newSymptom.trim();
+
+            // Save new symptom to Firestore
+            await saveCustomSymptom(user.uid, finalSymptom);
+            setCustomSymptoms(prev => [...prev, finalSymptom]);
         }
 
-        // Combine date & time into one Date object
         const finalDateTime = new Date(
             selectedDate.getFullYear(),
             selectedDate.getMonth(),
@@ -61,8 +96,7 @@ const Symptoms = () => {
             selectedTime.getMinutes()
         );
 
-        // Call Firestore function to save data
-        await recordSymptom(user.uid, dropdownValue, barSelected-1, finalDateTime);
+        await recordSymptom(user.uid, finalSymptom, barSelected - 1, finalDateTime);
 
         Alert.alert("Success", "Symptom recorded successfully!"); 
     } catch (error) {
@@ -86,12 +120,22 @@ const Symptoms = () => {
                             setValue={setDropdownValue}
                             isFocus={isFocus}
                             setIsFocus={setIsFocus}
-                            data={data}
+                            data={combinedSymptoms}
                             placeholder="Select"
                             searchPlaceholder="Search..."
                         />
                     </View>
                 </View>
+
+                {dropdownValue === "other" && (
+                  <FormField
+                    title="Enter Symptom:"
+                    value={newSymptom}
+                    handleChangeText={setNewSymptom}
+                    otherStyles="mt-4"
+                    keyboardType="email-address"
+                  />
+                )}
 
                 <View className="pt-4">
                     <Text className="font-pbold text-lg">Severity:</Text>
