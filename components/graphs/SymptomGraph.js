@@ -29,19 +29,42 @@ const SymptomGraph = () => {
     getSymptoms();
   }, []);
 
+  // Convert Firestore timestamp to JavaScript Date
+  const convertFirestoreTimestamp = (timestamp) => {
+    // Check if timestamp is in Firestore format with seconds and nanoseconds
+    if (timestamp && typeof timestamp === 'object' && 'seconds' in timestamp) {
+      return new Date(timestamp.seconds * 1000);
+    } 
+    // Try to parse as regular date string
+    return new Date(timestamp);
+  };
+
   // Update chart data when symptom selection changes
   useEffect(() => {
     if (!selectedSymptom || symptoms.length === 0) return;
 
     // Filter symptoms by selected type
+    // Filter symptoms by selected type
     const filteredSymptoms = symptoms
       .filter((s) => s.symptom === selectedSymptom)
-      .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)); // Sort by date
+      .sort((a, b) => {
+        const dateA = convertFirestoreTimestamp(a.timestamp);
+        const dateB = convertFirestoreTimestamp(b.timestamp);
+        return dateA - dateB;
+      });
 
     // Prepare labels (dates) and data (severity)
-    const labels = filteredSymptoms.map((s) =>
-      new Date(s.timestamp).toLocaleString()
-    );
+    const labels = filteredSymptoms.map((s) => {
+      const date = convertFirestoreTimestamp(s.timestamp);
+      
+      if (isNaN(date.getTime())) {
+        console.log("Invalid date:", s.timestamp);
+        return "Invalid";
+      }
+      
+      // Format as MM/DD
+      return `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
+    });
     const dataPoints = filteredSymptoms.map((s) => s.severity);
 
     setChartData({
