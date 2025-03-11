@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { View, Text } from 'react-native'
 import { router } from 'expo-router';
 import React from 'react'
 
@@ -9,10 +9,19 @@ import SymptomGraph from '../../components/graphs/SymptomGraph';
 const Insights = () => {
   return (
     <ScreenWrapper>
-      <View style={{ flex: 1 }}>
+      <View className="flex-1 items-center justify-center">
         <View className="items-center justify-center w-full h-full" >
 
-          <SymptomGraph />
+          <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
+                <Text className="text-2xl font-pbold text-center">What medication did you take?</Text>
+                
+                <View className="pt-5 pb-4">
+                  <SymptomGraph />
+                </View>
+
+            </View>
+
+          
           
         </View>
         
