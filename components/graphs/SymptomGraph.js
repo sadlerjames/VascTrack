@@ -83,8 +83,8 @@ const SymptomGraph = () => {
       const filteredSymptoms = symptoms
         .filter((s) => s.symptom === selectedSymptom)
         .sort((a, b) => {
-          const dateA = convertFirestoreTimestamp(a.timestamp);
-          const dateB = convertFirestoreTimestamp(b.timestamp);
+          const dateA = convertFirestoreTimestamp(a.occurredAt);
+          const dateB = convertFirestoreTimestamp(b.occurredAt);
           return dateA - dateB;
         });
 
@@ -95,7 +95,7 @@ const SymptomGraph = () => {
       }
 
       const labels = filteredSymptoms.map((s) => {
-        const date = convertFirestoreTimestamp(s.timestamp);
+        const date = convertFirestoreTimestamp(s.occurredAt);
         return formatDateLabel(date);
       });
 
@@ -158,6 +158,7 @@ const SymptomGraph = () => {
             yAxisInterval={1}
             chartConfig={chartConfig}
             bezier
+            segments={5}
             style={{ marginVertical: 8, borderRadius: 10 }}
             />
         ) : (
