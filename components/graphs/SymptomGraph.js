@@ -94,12 +94,16 @@ const SymptomGraph = () => {
         return;
       }
 
-      const labels = filteredSymptoms.map((s) => {
+      // Take only the last 7 entries (or fewer if there are less than 7)
+      const recentSymptoms = filteredSymptoms.slice(0, 7);
+      
+
+      const labels = recentSymptoms.map((s) => {
         const date = convertFirestoreTimestamp(s.occurredAt);
         return formatDateLabel(date);
       });
 
-      const dataPoints = filteredSymptoms.map((s) => s.severity);
+      const dataPoints = recentSymptoms.map((s) => s.severity);
       
       setChartData({
         labels,
