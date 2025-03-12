@@ -3,79 +3,115 @@ import React, { useEffect, useState } from 'react'
 import { LineChart } from 'react-native-chart-kit'
 
 import CustomDropdown from '../CustomDropdown'
-import { fetchUserSymptoms } from '../../lib/fetch'
+import { fetchCustomSymptoms, fetchUserSymptoms } from '../../lib/fetch'
+import { predefinedSymptoms } from '../../lib/data/symptomData'
+import { useGlobalContext } from '../../context/GlobalProvider'
 
 
 const SymptomGraph = () => {
-  const [symptoms, setSymptoms] = useState([]); // Store user's symptom data
+  const { user } = useGlobalContext();
+  const [symptoms, setSymptoms] = useState([]);
+  const [customSymptoms, setCustomSymptoms] = useState([]); // Users custom symptoms
   const [selectedSymptom, setSelectedSymptom] = useState(null); // Selected symptom
   const [isFocus, setIsFocus] = useState(false);
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [containerWidth, setContainerWidth] = useState(0);
 
-  // Fetch symptoms from users db
+  // Get users custom symptoms
   useEffect(() => {
-    const getSymptoms = async () => {
-        try {
-            const symptomRecords = await fetchUserSymptoms();
-            setSymptoms(symptomRecords);
-        } catch (error) {
-            console.error("Error loading symptoms:", error);
-        } finally {
-            setLoading(false);
-        }
+    const loadCustomSymptoms = async () => {
+      if (!user) return;
+      try {
+        const fetchedSymptoms = await fetchCustomSymptoms(user.uid);
+        const symptomRecords = await fetchUserSymptoms();
+        setCustomSymptoms(fetchedSymptoms);
+        setSymptoms(symptomRecords);
+      } catch (error) {
+        console.error("Error loading custom symptoms:", error);
+      } finally {
+        setLoading(false);
+      }
     };
-    getSymptoms();
-  }, []);
+    loadCustomSymptoms();
+  }, [user]);
+
+  const combinedSymptoms = [
+    ...predefinedSymptoms,
+    ...customSymptoms.map(symptom => ({ label: symptom, value: symptom }))
+  ];
 
   // Convert Firestore timestamp to JavaScript Date
   const convertFirestoreTimestamp = (timestamp) => {
-    // Check if timestamp is in Firestore format with seconds and nanoseconds
-    if (timestamp && typeof timestamp === 'object' && 'seconds' in timestamp) {
-      return new Date(timestamp.seconds * 1000);
-    } 
-    // Try to parse as regular date string
-    return new Date(timestamp);
+    try {
+      if (typeof timestamp === 'string') {
+        // Handle ISO string format (2025-03-07T19:56:00.000Z)
+        const date = new Date(timestamp);
+        
+        // Check if the date is valid
+        if (!isNaN(date.getTime())) {
+          return date;
+        }
+        throw new Error(`Invalid date string: ${timestamp}`);
+      } else if (timestamp && typeof timestamp === 'object' && 'seconds' in timestamp) {
+        // Handle Firestore timestamp format
+        return new Date(timestamp.seconds * 1000);
+      }
+      throw new Error(`Unknown timestamp format: ${JSON.stringify(timestamp)}`);
+    } catch (error) {
+      console.error("Error parsing date:", error);
+      // Return a fallback date instead of an invalid date
+      return new Date(); // Current date as fallback
+    }
+  };
+
+  // Format date as DD/MM
+  const formatDateLabel = (date) => {
+    try {
+      return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid";
+    }
   };
 
   // Update chart data when symptom selection changes
   useEffect(() => {
     if (!selectedSymptom || symptoms.length === 0) return;
+    
+    try {
+      const filteredSymptoms = symptoms
+        .filter((s) => s.symptom === selectedSymptom)
+        .sort((a, b) => {
+          const dateA = convertFirestoreTimestamp(a.timestamp);
+          const dateB = convertFirestoreTimestamp(b.timestamp);
+          return dateA - dateB;
+        });
 
-    // Filter symptoms by selected type
-    // Filter symptoms by selected type
-    const filteredSymptoms = symptoms
-      .filter((s) => s.symptom === selectedSymptom)
-      .sort((a, b) => {
-        const dateA = convertFirestoreTimestamp(a.timestamp);
-        const dateB = convertFirestoreTimestamp(b.timestamp);
-        return dateA - dateB;
+      // Only proceed if we have data
+      if (filteredSymptoms.length === 0) {
+        setChartData(null);
+        return;
+      }
+
+      const labels = filteredSymptoms.map((s) => {
+        const date = convertFirestoreTimestamp(s.timestamp);
+        return formatDateLabel(date);
       });
 
-    // Prepare labels (dates) and data (severity)
-    const labels = filteredSymptoms.map((s) => {
-      const date = convertFirestoreTimestamp(s.timestamp);
+      const dataPoints = filteredSymptoms.map((s) => s.severity);
       
-      if (isNaN(date.getTime())) {
-        console.log("Invalid date:", s.timestamp);
-        return "Invalid";
-      }
-      
-      // Format as MM/DD
-      return `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
-    });
-    const dataPoints = filteredSymptoms.map((s) => s.severity);
-
-    setChartData({
-      labels,
-      datasets: [{ data: dataPoints }],
-    });
+      setChartData({
+        labels,
+        datasets: [{ data: dataPoints }],
+      });
+    } catch (error) {
+      console.error("Error processing chart data:", error);
+      setChartData(null);
+    }
   }, [selectedSymptom, symptoms]);
 
-
   const chartConfig = {
-    // backgroundColor: "#1e3a8a",
     backgroundGradientFrom: "#f2f2f2",
     backgroundGradientTo: "#f2f2f2",
     decimalPlaces: 0,
@@ -83,9 +119,9 @@ const SymptomGraph = () => {
     labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
     style: { borderRadius: 16 },
     propsForDots: {
-        r: "6",
-        strokeWidth: "2",
-        stroke: "#3b82f6",
+      r: "6",
+      strokeWidth: "2",
+      stroke: "#3b82f6",
     },
   }
 
@@ -105,7 +141,7 @@ const SymptomGraph = () => {
         setValue={setSelectedSymptom}
         isFocus={isFocus}
         setIsFocus={setIsFocus}
-        data={Array.from(new Set(symptoms.map((s) => ({ label: s.symptom, value: s.symptom }))))}
+        data={Array.from(new Set(combinedSymptoms.map((s) => ({ label: s.label, value: s.value }))))}
         placeholder="Select a symptom"
         searchPlaceholder="Search..."
       />
