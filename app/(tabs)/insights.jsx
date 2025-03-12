@@ -13,18 +13,15 @@ const Insights = () => {
         <View className="items-center justify-center w-full h-full" >
 
           <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
-                <Text className="text-2xl font-pbold text-center">Symptom over Time</Text>
-                
-                <View className="pt-5 pb-4">
-                  <SymptomGraph />
-                </View>
-
+            <Text className="text-2xl font-pbold text-center">Symptom Severity</Text>
+            
+            <View className="pt-5">
+              <SymptomGraph />
             </View>
 
-          
+          </View>
           
         </View>
-        
       </View>
     </ScreenWrapper>
   )

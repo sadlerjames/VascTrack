@@ -65,13 +65,14 @@ const SymptomGraph = () => {
     }
   };
 
-  // Format date as DD/MM
+  // Format date as day of week
   const formatDateLabel = (date) => {
     try {
-      return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+      const daysOfWeek = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+      return daysOfWeek[date.getDay()];
     } catch (error) {
       console.error("Error formatting date:", error);
-      return "Invalid";
+      return "?";
     }
   };
 
@@ -129,9 +130,6 @@ const SymptomGraph = () => {
     },
   }
 
-
-
-
   return (
     <View 
         className="w-full"
@@ -140,6 +138,7 @@ const SymptomGraph = () => {
             setContainerWidth(width);
         }}
     >
+      <Text className="font-plight text-lg pb-3">The following graph shows the change of severity of your symptom.</Text>
       <CustomDropdown
         value={selectedSymptom}
         setValue={setSelectedSymptom}
@@ -152,7 +151,7 @@ const SymptomGraph = () => {
 
         {loading ? (
             <ActivityIndicator size="large" color="#0000ff" />
-        ) : chartData && chartData.labels.length > 0 ? (
+        ) : chartData && chartData.labels.length > 0 ? (     
             <LineChart
             data={chartData}
             width={containerWidth > 0 ? containerWidth : 300}
