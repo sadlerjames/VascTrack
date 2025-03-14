@@ -44,11 +44,11 @@ export default function App() {
             containerStyles="w-full mt-7 bg-tertiary"
           />
           {/* Skip the sign in for testing */}
-          <CustomButton
+          {/* <CustomButton
             title="Home"
             handlePress={() => router.push('/home')}
             containerStyles="w-full mt-7 bg-tertiary"
-          />
+          /> */}
             
         </View>
 

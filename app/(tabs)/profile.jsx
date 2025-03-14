@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react'
 
 import ScreenWrapper from '../../components/ScreenWrapper'
-import { useGlobalContext } from '../../context/GlobalProvider';
+import { useGlobalContext, setUser } from '../../context/GlobalProvider';
 import { updateUserProfile, updateUserPassword } from '../../lib/update';
 import { fetchUserDetails } from '../../lib/fetch'
 
@@ -65,6 +65,13 @@ const Profile = () => {
       if (form.password) {
         await updateUserPassword(form.password);
       }
+
+      setUser({
+        ...user,
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+      });
 
       Alert.alert('Success', 'Profile updated successfully!');
     } catch (error) {
