@@ -14,11 +14,11 @@ const TabIcon = ({icon, color, name, focused}) => {
           source={icon}
           resizeMode="contain"
           tintColor={color}
-          className="w-7 h-7 mb-1"
+          className="w-8 h-8 mb-1"
         />
       </View>
       <View>
-        <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-s`} numberOfLines={1} >
+        <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-s text-center`} >
           {name}
         </Text>
       </View>
@@ -28,6 +28,7 @@ const TabIcon = ({icon, color, name, focused}) => {
 
 const TabsLayout = () => {
   const tabBarHeight = screenWidth < 375 ? 60 : 75; // Calculate tab height based on width
+  const tabWidth = screenWidth / 4; // Calculate even spacing for the 4 tab icons
   return (
       <Tabs
       screenOptions={{
@@ -37,13 +38,12 @@ const TabsLayout = () => {
           borderTopWidth: 1,
           height: tabBarHeight,
           paddingBottom: 10,
-          paddingHorizontal: 0
         },
         tabBarItemStyle: {
           paddingVertical: 10,
           paddingHorizontal: 0,
-          minWidth: 80,
-          flex: 1,
+          width: tabWidth,
+          minWidth: tabWidth,
           justifyContent: 'center',
           alignItems: 'center'
         }
