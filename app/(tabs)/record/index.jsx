@@ -31,6 +31,13 @@ const Record = () => {
               containerStyles="w-80 h-40 bg-quintet mt-3"
               textStyles="text-2xl"
             />  
+
+            <CustomButton
+              title="Notifications"
+              handlePress={() => router.push('/record/notifications')}
+              containerStyles="w-80 h-40 bg-quintet mt-3"
+              textStyles="text-2xl"
+            />  
           </View>
 
         </View>
