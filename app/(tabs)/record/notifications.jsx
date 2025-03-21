@@ -4,6 +4,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ScreenWrapper from '../../../components/ScreenWrapper';
+import CustomDropdown from '../../../components/CustomDropdown'
+
+import { getUserMedications } from '../../../lib/fetch'
+import { predefinedMedications } from '../../../lib/medicationData' 
 import { useGlobalContext } from '../../../context/GlobalProvider';
 
 // Configure notifications
@@ -16,8 +20,13 @@ Notifications.setNotificationHandler({
 });
 
 export default function ReminderScreen() {
+  const { user } = useGlobalContext();
+  const [isFocus, setIsFocus] = useState(false);
+
   const [reminders, setReminders] = useState([]);
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(''); //Can delete
+  const [selectedMedication, setSelectedMedication] = useState(null);
+  const [medicationList, setMedicationList] = useState(predefinedMedications);
   const [body, setBody] = useState('');
   const [time, setTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -26,6 +35,7 @@ export default function ReminderScreen() {
   const notificationListener = useRef();
   const responseListener = useRef();
 
+  // Set up listeners for reminders
   useEffect(() => {
     // Load saved reminders
     loadReminders();
@@ -47,6 +57,17 @@ export default function ReminderScreen() {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
+
+  // Get the users medication to put in dropdown
+  useEffect(() => {
+    const fetchMedications = async () => {
+      if (!user) return;
+      const userMedications = await getUserMedications(user.uid);
+      setMedicationList([...predefinedMedications, ...userMedications]);
+    };
+    fetchMedications();
+  }, [user]);
+  
 
   const checkNotificationPermissions = async () => {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -158,16 +179,19 @@ export default function ReminderScreen() {
   };
 
   const createReminder = async () => {
-    if (!title.trim()) {
+    if (!selectedMedication) {
       Alert.alert("Error", "Please enter a reminder title");
       return;
     }
 
+    // The body text of the reminder
+    var bodyText = "Take your medication now!"
+
     // Create a new reminder object
     const newReminder = {
       id: Date.now().toString(),
-      title,
-      body,
+      title: selectedMedication,
+      body: bodyText,
       time: time.toISOString(),
       isDaily,
       createdAt: new Date().toISOString(),
@@ -181,6 +205,7 @@ export default function ReminderScreen() {
       const updatedReminders = [...reminders, newReminder];
       setReminders(updatedReminders);
       await saveReminders(updatedReminders);
+      setSelectedMedication(null);
       
       // Reset form
       setTitle('');
@@ -241,22 +266,17 @@ export default function ReminderScreen() {
                 <View className='bg-white rounded-lg p-4 shadow-md mb-6'>
                     <Text className='text-lg font-psemibold mb-3 text-gray-800'>Create New Reminder</Text>
                     
-                    <Text className='text-gray-600 font-pregular mb-1'>Title</Text>
-                    <TextInput
-                        className='border border-gray-300 rounded-md p-2 mb-3'
-                        value={title}
-                        onChangeText={setTitle}
-                        placeholder="e.g., Take medication"
+                    <Text className='text-gray-600 font-pregular mb-1'>Select Medication</Text>
+                    <CustomDropdown
+                      value={selectedMedication}
+                      setValue={setSelectedMedication}
+                      isFocus={isFocus}
+                      setIsFocus={setIsFocus}
+                      data={medicationList}
+                      placeholder="Select a Medication"
+                      searchPlaceholder="Search..."
                     />
 
-                    <Text className='text-gray-600 font-pregular mb-1'>Message (optional)</Text>
-                    <TextInput
-                        className='border border-gray-300 rounded-md p-2 mb-3'
-                        value={body}
-                        onChangeText={setBody}
-                        placeholder="Additional details"
-                        multiline
-                    />
 
                     <Text className='text-gray-600 mb-1'>Time</Text>
                     <TouchableOpacity
