@@ -242,18 +242,26 @@ export default function ReminderScreen() {
   // Show permissions message if needed
   if (permissionStatus === 'denied') {
     return (
-      <View className='flex-1 bg-gray-100 p-4 justify-center items-center'>
-        <Text className='text-xl text-center mb-4'>Notification Permission Required</Text>
-        <Text className='text-center mb-6'>
-          This feature requires notification permissions. Please enable notifications for this app in your device settings.
-        </Text>
-        <TouchableOpacity 
-          className='bg-blue-500 rounded-md py-3 px-4'
-          onPress={checkNotificationPermissions}
-        >
-          <Text className='text-center text-white font-semibold'>Check Permission Again</Text>
-        </TouchableOpacity>
-      </View>
+      <ScreenWrapper>
+        <View className="flex-1 items-center justify-center">
+          <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
+            <Text className='text-2xl text-center mb-4 font-pbold'>Notification Permission Required</Text>
+            <Text className='text-center mb-6 font-pregular'>
+              This feature requires notification permissions. Please enable notifications for this app in your device settings.
+            </Text>
+
+            <View className="items-center">
+              <CustomButton
+                  title="Check Permission Again"
+                  handlePress={checkNotificationPermissions}
+                  containerStyles="w-3/4 bg-tertiary mt-3"
+                  textStyles="text-2xl text-white"
+              />  
+            </View>
+
+          </View>
+        </View>
+      </ScreenWrapper>
     );
   }
 
