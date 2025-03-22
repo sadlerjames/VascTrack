@@ -4,10 +4,11 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ScreenWrapper from '../../../components/ScreenWrapper';
-import CustomDropdown from '../../../components/CustomDropdown'
+import CustomDropdown from '../../../components/CustomDropdown';
+import CustomButton from '../../../components/CustomButton';
 
-import { getUserMedications } from '../../../lib/fetch'
-import { predefinedMedications } from '../../../lib/medicationData' 
+import { getUserMedications } from '../../../lib/fetch';
+import { predefinedMedications } from '../../../lib/medicationData';
 import { useGlobalContext } from '../../../context/GlobalProvider';
 
 // Configure notifications
@@ -180,7 +181,7 @@ export default function ReminderScreen() {
 
   const createReminder = async () => {
     if (!selectedMedication) {
-      Alert.alert("Error", "Please enter a reminder title");
+      Alert.alert("Error", "Please choose a medication to be reminded of!");
       return;
     }
 
@@ -228,7 +229,6 @@ export default function ReminderScreen() {
   };
 
   const handleTimeChange = (event, selectedTime) => {
-    setShowTimePicker(false);
     if (selectedTime) {
       setTime(selectedTime);
     }
@@ -259,87 +259,82 @@ export default function ReminderScreen() {
 
   return (
     <ScreenWrapper>
+      <ScrollView style={{ flex: 1 }}>
         <View className="flex-1 items-center justify-center">
-            <ScrollView className="w-11/12 bg-primary p-6 rounded-2xl mb-4">
-                <Text className='text-2xl font-bold mb-6 font-pbold'>Reminder Settings</Text>
-                {/* Reminder Form */}
-                <View className='bg-white rounded-lg p-4 shadow-md mb-6'>
-                    <Text className='text-lg font-psemibold mb-3 text-gray-800'>Create New Reminder</Text>
+          <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
+            <Text className='text-lg font-psemibold mb-3 text-gray-800'>Create New Reminder</Text>
                     
-                    <Text className='text-gray-600 font-pregular mb-1'>Select Medication</Text>
-                    <CustomDropdown
-                      value={selectedMedication}
-                      setValue={setSelectedMedication}
-                      isFocus={isFocus}
-                      setIsFocus={setIsFocus}
-                      data={medicationList}
-                      placeholder="Select a Medication"
-                      searchPlaceholder="Search..."
-                    />
+            <Text className='text-gray-600 font-pregular mb-1'>Select Medication</Text>
+            <CustomDropdown
+              value={selectedMedication}
+              setValue={setSelectedMedication}
+              isFocus={isFocus}
+              setIsFocus={setIsFocus}
+              data={medicationList}
+              placeholder="Medication"
+              searchPlaceholder="Search..."
+            />
 
-
-                    <Text className='text-gray-600 mb-1'>Time</Text>
-                    <TouchableOpacity
-                        className='border border-gray-300 rounded-md p-2 mb-3'
-                        onPress={() => setShowTimePicker(true)}
-                    >
-                        <Text>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-                    </TouchableOpacity>
-                    {showTimePicker && (
-                        <DateTimePicker
-                        value={time}
-                        mode="time"
-                        is24Hour={true}
-                        display="default"
-                        onChange={handleTimeChange}
-                        />
-                    )}
-                    <View className='flex-row items-center mb-4'>
-                        <TouchableOpacity
-                        className='mr-2'
-                        onPress={() => setIsDaily(!isDaily)}
-                        >
-                            <View className={`h-6 w-6 rounded-md border border-gray-400 ${isDaily ? 'bg-blue-500 border-blue-500' : 'bg-white'}`}>
-                                {isDaily && <Text className='text-white text-center'>✓</Text>}
-                            </View>
-                        </TouchableOpacity>
-                        <Text className='text-gray-700'>Repeat daily</Text>
+            <View className="mt-2">
+              <Text className='text-gray-600 mb-1'>Time</Text>
+              <DateTimePicker
+                  value={time}
+                  mode="time"
+                  is24Hour={true}
+                  display="default"
+                  onChange={handleTimeChange}
+              />
+            </View>
+            
+            <View className='flex-row items-center mb-4 mt-3'>
+                <TouchableOpacity
+                className='mr-2'
+                onPress={() => setIsDaily(!isDaily)}
+                >
+                    <View className={`h-6 w-6 rounded-md border border-gray-400 ${isDaily ? 'bg-blue-500 border-blue-500' : 'bg-white'}`}>
+                        {isDaily && <Text className='text-white text-center'>✓</Text>}
                     </View>
+                </TouchableOpacity>
+                <Text className='text-gray-700'>Repeat daily</Text>
+            </View>
 
-                    <TouchableOpacity
-                        className='bg-blue-500 rounded-md py-3 px-4'
-                        onPress={createReminder}
-                    >
-                        <Text className='text-center text-white font-semibold'>Create Reminder</Text>
-                    </TouchableOpacity>
-                </View>
-
-                {/* Reminders List */}
-                <Text className='text-xl font-pbold mb-3 text-gray-800'>Your Reminders</Text>
-                {reminders.length === 0 ? (
-                <Text className='text-gray-500 italic'>No reminders set</Text>
-                ) : (
-                reminders.map(reminder => (
-                    <View key={reminder.id} className='bg-white rounded-lg p-4 shadow-sm mb-3 flex-row justify-between items-center'>
-                        <View className='flex-1'>
-                            <Text className='font-semibold text-lg'>{reminder.title}</Text>
-                            {reminder.body ? <Text className='text-gray-600 mb-1'>{reminder.body}</Text> : null}
-                            <View className='flex-row items-center'>
-                                <Text className='text-gray-500'>{formatTime(reminder.time)}</Text>
-                                {reminder.isDaily && <Text className='text-blue-500 ml-2'>Daily</Text>}
-                            </View>
-                        </View>
-                        <TouchableOpacity
-                            className='p-2'
-                            onPress={() => deleteReminder(reminder.id)}
-                        >
-                            <Text className='text-red-500 font-semibold'>Delete</Text>
-                        </TouchableOpacity>
-                    </View>
-                ))
-                )}
-            </ScrollView>
+            <CustomButton
+              title="Create Reminder"
+              handlePress={createReminder}
+              containerStyles="w-full bg-tertiary mt-3"
+              textStyles="text-2xl"
+            />  
+          
+          
+          </View>
+          <View className="w-11/12 bg-primary p-6 rounded-2xl mb-4">
+              {/* Reminders List */}
+              <Text className='text-xl font-pbold mb-3 text-gray-800'>Your Reminders</Text>
+              {reminders.length === 0 ? (
+              <Text className='text-gray-500 italic'>No reminders set</Text>
+              ) : (
+              reminders.map(reminder => (
+                  <View key={reminder.id} className='bg-white rounded-lg p-4 shadow-sm mb-3 flex-row justify-between items-center'>
+                      <View className='flex-1'>
+                          <Text className='font-semibold text-lg'>{reminder.title}</Text>
+                          {reminder.body ? <Text className='text-gray-600 mb-1'>{reminder.body}</Text> : null}
+                          <View className='flex-row items-center'>
+                              <Text className='text-gray-500'>{formatTime(reminder.time)}</Text>
+                              {reminder.isDaily && <Text className='text-blue-500 ml-2'>Daily</Text>}
+                          </View>
+                      </View>
+                      <TouchableOpacity
+                          className='p-2'
+                          onPress={() => deleteReminder(reminder.id)}
+                      >
+                          <Text className='text-red-500 font-semibold'>Delete</Text>
+                      </TouchableOpacity>
+                  </View>
+              ))
+              )}
+          </View>
         </View>
+      </ScrollView>
     </ScreenWrapper>
   );
 }
