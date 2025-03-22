@@ -44,7 +44,23 @@ export default function ReminderScreen() {
 
     // Set up notification listeners
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      console.log('Notification received:', notification);
+      // console.log('Notification received:', notification);
+      
+      // Get the identifier of the delivered notification
+      const deliveredId = notification.request.identifier;
+      
+      // Check if this is a one-time reminder
+      const deliveredReminder = reminders.find(reminder => reminder.id === deliveredId);
+      
+      // If it exists and is not a daily reminder, remove it
+      if (deliveredReminder && !deliveredReminder.isDaily) {
+        // console.log('Removing one-time reminder after delivery:', deliveredId);
+        
+        // Remove from state and storage
+        const updatedReminders = reminders.filter(reminder => reminder.id !== deliveredId);
+        setReminders(updatedReminders);
+        saveReminders(updatedReminders);
+      }
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
@@ -55,7 +71,7 @@ export default function ReminderScreen() {
       Notifications.removeNotificationSubscription(notificationListener.current);
       Notifications.removeNotificationSubscription(responseListener.current);
     };
-  }, []);
+  }, [reminders]);
 
   // Get the users medication to put in dropdown
   useEffect(() => {
@@ -152,14 +168,11 @@ export default function ReminderScreen() {
       }
       
       const year = scheduledDateTime.getFullYear();
-      const month = scheduledDateTime.getMonth() + 1; // JavaScript months are 0-indexed
+      const month = scheduledDateTime.getMonth() + 1;
       const day = scheduledDateTime.getDate();
       
-      console.log(`Scheduling for specific date: ${year}-${month}-${day} at ${hours}:${minutes}`);
-      
-      // Use calendar trigger type with repeats: false
       trigger = {
-        type: 'calendar',  // Explicitly set the type to calendar
+        type: 'calendar', 
         year: year,
         month: month,
         day: day,
@@ -169,7 +182,7 @@ export default function ReminderScreen() {
         repeats: false
       };
       
-      console.log("Calendar trigger:", JSON.stringify(trigger));
+      // console.log("Calendar trigger:", JSON.stringify(trigger));
     }
   
     try {
@@ -183,7 +196,7 @@ export default function ReminderScreen() {
         trigger,
       });
   
-      console.log(`Scheduled notification "${title}" for ${isDaily ? 'daily at' : ''} ${scheduledTime}`);
+      // console.log(`Scheduled notification "${title}" for ${isDaily ? 'daily at' : ''} ${scheduledTime}`);
       return true;
     } catch (error) {
       console.error("Error scheduling notification:", error);
