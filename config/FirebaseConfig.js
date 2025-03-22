@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
+
 import { 
     FIREBASE_API_KEY, 
     FIREBASE_AUTH_DOMAIN, 
@@ -32,6 +32,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 
 export { auth, db };

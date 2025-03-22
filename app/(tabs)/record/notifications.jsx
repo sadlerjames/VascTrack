@@ -25,12 +25,10 @@ export default function ReminderScreen() {
   const [isFocus, setIsFocus] = useState(false);
 
   const [reminders, setReminders] = useState([]);
-  const [title, setTitle] = useState(''); //Can delete
   const [selectedMedication, setSelectedMedication] = useState(null);
   const [medicationList, setMedicationList] = useState(predefinedMedications);
   const [body, setBody] = useState('');
   const [time, setTime] = useState(new Date());
-  const [showTimePicker, setShowTimePicker] = useState(false);
   const [isDaily, setIsDaily] = useState(true);
   const [permissionStatus, setPermissionStatus] = useState(null);
   const notificationListener = useRef();
@@ -129,24 +127,22 @@ export default function ReminderScreen() {
     // Cancel any existing notification with the same ID
     await Notifications.cancelScheduledNotificationAsync(id);
     
-    // Get hours and minutes from the time
     const scheduledTime = new Date(time);
+    const now = new Date();
     const hours = scheduledTime.getHours();
     const minutes = scheduledTime.getMinutes();
-    
-    // Create a trigger
+  
     let trigger;
-    
+  
     if (isDaily) {
-      // Daily notification at specific time
       trigger = {
+        type: 'daily',
         hour: hours,
         minute: minutes,
         repeats: true,
       };
     } else {
-      // One-time notification
-      const now = new Date();
+      // One-time notification using calendar notification trigger
       const scheduledDateTime = new Date();
       scheduledDateTime.setHours(hours, minutes, 0, 0);
       
@@ -155,11 +151,28 @@ export default function ReminderScreen() {
         scheduledDateTime.setDate(scheduledDateTime.getDate() + 1);
       }
       
-      trigger = scheduledDateTime;
+      const year = scheduledDateTime.getFullYear();
+      const month = scheduledDateTime.getMonth() + 1; // JavaScript months are 0-indexed
+      const day = scheduledDateTime.getDate();
+      
+      console.log(`Scheduling for specific date: ${year}-${month}-${day} at ${hours}:${minutes}`);
+      
+      // Use calendar trigger type with repeats: false
+      trigger = {
+        type: 'calendar',  // Explicitly set the type to calendar
+        year: year,
+        month: month,
+        day: day,
+        hour: hours,
+        minute: minutes,
+        second: 0,
+        repeats: false
+      };
+      
+      console.log("Calendar trigger:", JSON.stringify(trigger));
     }
-    
+  
     try {
-      // Schedule the notification
       await Notifications.scheduleNotificationAsync({
         identifier: id,
         content: {
@@ -169,8 +182,8 @@ export default function ReminderScreen() {
         },
         trigger,
       });
-      
-      console.log(`Scheduled notification "${title}" for ${isDaily ? 'daily at' : ''} ${hours}:${minutes}`);
+  
+      console.log(`Scheduled notification "${title}" for ${isDaily ? 'daily at' : ''} ${scheduledTime}`);
       return true;
     } catch (error) {
       console.error("Error scheduling notification:", error);
@@ -178,6 +191,7 @@ export default function ReminderScreen() {
       return false;
     }
   };
+  
 
   const createReminder = async () => {
     if (!selectedMedication) {
@@ -206,10 +220,10 @@ export default function ReminderScreen() {
       const updatedReminders = [...reminders, newReminder];
       setReminders(updatedReminders);
       await saveReminders(updatedReminders);
-      setSelectedMedication(null);
+      
       
       // Reset form
-      setTitle('');
+      setSelectedMedication(null);
       setBody('');
       setTime(new Date());
       setIsDaily(true);
@@ -228,6 +242,7 @@ export default function ReminderScreen() {
     await saveReminders(updatedReminders);
   };
 
+  // Updates time if change in time picker
   const handleTimeChange = (event, selectedTime) => {
     if (selectedTime) {
       setTime(selectedTime);
@@ -255,7 +270,7 @@ export default function ReminderScreen() {
                   title="Check Permission Again"
                   handlePress={checkNotificationPermissions}
                   containerStyles="w-3/4 bg-tertiary mt-3"
-                  textStyles="text-2xl text-white"
+                  textStyles="text-2xl"
               />  
             </View>
 
