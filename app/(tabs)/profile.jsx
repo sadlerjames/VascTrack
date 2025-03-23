@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react'
 
 import ScreenWrapper from '../../components/ScreenWrapper'
-import { useGlobalContext, setUser } from '../../context/GlobalProvider';
+import { useGlobalContext } from '../../context/GlobalProvider';
 import { updateUserProfile, updateUserPassword } from '../../lib/update';
 import { fetchUserDetails } from '../../lib/fetch'
 
@@ -11,7 +11,7 @@ import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton';
 
 const Profile = () => {
-  const { user } = useGlobalContext();
+  const { user, setUser } = useGlobalContext();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
@@ -82,70 +82,70 @@ const Profile = () => {
   }
   return (
     <ScreenWrapper>
-      <View className="flex-1 items-center justify-center">
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            className="w-full h-full items-center justify-center flex-1"
-          > 
-            <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
+      <ScrollView style={{ flex: 1 }}>
+        <View className="flex-1 items-center justify-center">
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+              className="w-full h-full items-center justify-center flex-1"
+            > 
+              <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
+                  <View className="w-full justify-center px-4 my-3">
+                    <Text className="text-2xl text-center text-black font-psemibold">Edit Profile</Text>
 
-              <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                <View className="w-full justify-center h-full px-4 my-3">
-                  <Text className="text-2xl text-center text-black font-psemibold">Edit Profile</Text>
+                    <FormField
+                      title="First Name"
+                      value={form.firstName}
+                      handleChangeText={(n) => setForm({ ...form, firstName: n })}
+                      otherStyles="mt-7"
+                    />
 
-                  <FormField
-                    title="First Name"
-                    value={form.firstName}
-                    handleChangeText={(n) => setForm({ ...form, firstName: n })}
-                    otherStyles="mt-7"
-                  />
+                    <FormField
+                      title="Last Name"
+                      value={form.lastName}
+                      handleChangeText={(n) => setForm({ ...form, lastName: n })}
+                      otherStyles="mt-7"
+                    />
 
-                  <FormField
-                    title="Last Name"
-                    value={form.lastName}
-                    handleChangeText={(n) => setForm({ ...form, lastName: n })}
-                    otherStyles="mt-7"
-                  />
+                    <FormField
+                      title="Email"
+                      value={form.email}
+                      handleChangeText={(e) => setForm({ ...form, email: e })}
+                      otherStyles="mt-7"
+                      keyboardType="email-address"
+                    />
 
-                  <FormField
-                    title="Email"
-                    value={form.email}
-                    handleChangeText={(e) => setForm({ ...form, email: e })}
-                    otherStyles="mt-7"
-                    keyboardType="email-address"
-                  />
+                    <FormField
+                      title="New Password (optional)"
+                      value={form.password}
+                      handleChangeText={(p) => setForm({ ...form, password: p })}
+                      otherStyles="mt-7"
+                      secureTextEntry
+                    />
 
-                  <FormField
-                    title="New Password (optional)"
-                    value={form.password}
-                    handleChangeText={(p) => setForm({ ...form, password: p })}
-                    otherStyles="mt-7"
-                    secureTextEntry
-                  />
+                    <FormField
+                      title="Confirm New Password"
+                      value={form.confirmPassword}
+                      handleChangeText={(cp) => setForm({ ...form, confirmPassword: cp })}
+                      otherStyles="mt-7"
+                      secureTextEntry
+                    />
 
-                  <FormField
-                    title="Confirm New Password"
-                    value={form.confirmPassword}
-                    handleChangeText={(cp) => setForm({ ...form, confirmPassword: cp })}
-                    otherStyles="mt-7"
-                    secureTextEntry
-                  />
+                    <CustomButton
+                      title="Update Profile"
+                      handlePress={handleUpdateProfile}
+                      containerStyles="mt-7 bg-tertiary"
+                      isLoading={isSubmitting}
+                    />
+                  </View>
+                
+          
 
-                  <CustomButton
-                    title="Update Profile"
-                    handlePress={handleUpdateProfile}
-                    containerStyles="mt-7 bg-tertiary"
-                    isLoading={isSubmitting}
-                  />
                 </View>
-              </ScrollView>
-        
-
-              </View>
-            </KeyboardAvoidingView>
-          </TouchableWithoutFeedback>
-      </View>
+              </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
+        </View>
+      </ScrollView>
     </ScreenWrapper>
   )
 }
