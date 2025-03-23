@@ -90,16 +90,47 @@ const Medication = () => {
                 </View>
 
 
-                {/* Dosage Input */}
-                <View className="pb-4">
-                  <FormField
-                      title="Enter dossage:"
-                      value={dosage}
-                      placeholder="E.g. 500mg"
-                      handleChangeText={setDosage}
-                      otherStyles="mt-4"
-                      keyboardType="numeric"
+                <View className="mt-3">
+                  {/* Predefined doages */}
+                  <Text className="text-base text-black font-pmedium">Enter dosage:</Text>
+                  <View className="flex-row justify-between mt-2">
+                    <CustomButton
+                      title="50mg"
+                      handlePress={() => setDosage("50mg")}
+                      containerStyles="bg-secondary px-2 py-1 mr-1"
+                      textStyles="text-sm"
                     />
+                    <CustomButton
+                      title="100mg"
+                      handlePress={() => setDosage("100mg")}
+                      containerStyles="bg-secondary px-2 py-1 mr-1"
+                      textStyles="text-sm"
+                    />
+                    <CustomButton
+                      title="250mg"
+                      handlePress={() => setDosage("250mg")}
+                      containerStyles="bg-secondary px-2 py-1 mr-1"
+                      textStyles="text-sm"
+                    />
+                    <CustomButton
+                      title="500mg"
+                      handlePress={() => setDosage("500mg")}
+                      containerStyles="bg-secondary px-2 py-1"
+                      textStyles="text-sm"
+                    />
+                  </View>
+
+                  {/* Dosage Input */}
+                  <View className="pb-4">
+                    <FormField
+                        title=""
+                        value={dosage}
+                        placeholder="E.g. 500mg"
+                        handleChangeText={setDosage}
+                        otherStyles=""
+                        keyboardType="numeric"
+                      />
+                  </View>
                 </View>
 
                 <View className="items-center">
