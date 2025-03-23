@@ -138,7 +138,7 @@ const SymptomGraph = () => {
             setContainerWidth(width);
         }}
     >
-      <Text className="font-plight text-lg pb-3">The following graph shows the change of severity of your symptom over the last 7 days.</Text>
+      {/* <Text className="font-plight text-lg pb-3">This graph shows the change in severity of your symptom over the last 7 days.</Text> */}
       <CustomDropdown
         value={selectedSymptom}
         setValue={setSelectedSymptom}
@@ -148,7 +148,17 @@ const SymptomGraph = () => {
         placeholder="Select a symptom"
         searchPlaceholder="Search..."
       />
-
+      {/* <View className="mt-3">
+        <CustomDropdown
+          // value={}
+          // setValue={}
+          isFocus={isFocus}
+          setIsFocus={setIsFocus}
+          data={Array.from(new Set(combinedSymptoms.map((s) => ({ label: s.label, value: s.value }))))}
+          placeholder="Last week"
+          searchPlaceholder="Search..."
+        />
+      </View> */}
         {loading ? (
             <ActivityIndicator size="large" color="#0000ff" />
         ) : chartData && chartData.labels.length > 0 ? (     

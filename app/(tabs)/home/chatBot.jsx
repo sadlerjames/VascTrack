@@ -80,7 +80,7 @@ const ChatBot = () => {
                   <Markdown
                     style={{
                       body: { color: msg.role === "user" ? "white" : "black", fontSize: 16 },
-                      strong: { fontWeight: "bold" }, // Ensures **bold** text is bold
+                      strong: { fontWeight: "bold" },
                       list_item: { marginVertical: 5 } // Improves list spacing
                     }}
                   >

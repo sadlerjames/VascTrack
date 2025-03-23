@@ -110,7 +110,7 @@ const Symptoms = () => {
         <View className="flex-1 items-center justify-center">
 
             <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
-                <Text className="text-2xl font-pbold text-center">What are you feeling today?</Text>
+                <Text className="text-2xl font-pbold text-center">How are you feeling today?</Text>
                 
                 <View className="pt-2">
                     <Text className="font-pbold text-lg">Symptom:</Text>

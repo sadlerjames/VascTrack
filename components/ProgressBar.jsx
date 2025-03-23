@@ -34,8 +34,8 @@ const ProgressBar = ({ selected, setSelected, containerStyle }) => {
         </View>
 
         <View className="w-full flex-row justify-between pt-2">
-          <Text className=" text-gray-600 font-plight text-center">None</Text>
-          <Text className=" text-gray-600 font-plight text-center">Lots</Text>
+          <Text className=" text-gray-600 font-plight text-center">No{"\n"}Impact</Text>
+          <Text className=" text-gray-600 font-plight text-center">Severe{"\n"}Impact</Text>
 
         </View>
       </View>
