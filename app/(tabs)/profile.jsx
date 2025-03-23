@@ -11,7 +11,7 @@ import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton';
 
 const Profile = () => {
-  const { user, setUser } = useGlobalContext();
+  const { user, setUser, logout } = useGlobalContext();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
@@ -142,6 +142,13 @@ const Profile = () => {
           
 
                 </View>
+
+                <CustomButton
+                  title="Sign Out"
+                  handlePress={logout}
+                  containerStyles="mt-2 w-11/12 bg-red-500 mb-4"
+                />
+
               </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
         </View>

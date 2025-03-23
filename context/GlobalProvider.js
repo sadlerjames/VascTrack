@@ -1,5 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getCurrentUser } from "../lib/authentication";
+import { signOut } from "firebase/auth";
+import { auth } from "../config/FirebaseConfig";
+import { Link, router } from 'expo-router';
 
 const GlobalContext = createContext();
 
@@ -27,7 +30,18 @@ const GlobalProvider = ({ children }) => {
             setisLoading(false);
         })
     }, []);
-    
+
+    // Clears the users session and redirect to login
+    const logout = async () => {
+        try {
+            await signOut(auth);
+            setUser(null);
+            setisLoggedIn(false);
+            router.replace("/sign-in"); 
+        } catch (error) {
+            console.error("Logout error:", error.message);
+        }
+    };
 
     return (
         <GlobalContext.Provider
@@ -36,7 +50,8 @@ const GlobalProvider = ({ children }) => {
                 setisLoggedIn,
                 user,
                 setUser,
-                isLoading
+                isLoading,
+                logout
             }}
         >
             { children }
