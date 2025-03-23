@@ -1,6 +1,7 @@
 import { View, Text, Alert, TextInput } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { router, Link } from 'expo-router';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { recordMedication, saveUserMedication } from '../../../lib/recording';
 import { getUserMedications } from '../../../lib/fetch'
@@ -22,6 +23,10 @@ const Medication = () => {
   const [customMedication, setCustomMedication] = useState("");
   const [dosage, setDosage] = useState("");
   const [medicationList, setMedicationList] = useState(predefinedMedications);
+
+  // Date + Time Picker
+  const [selectedDate, setSelectedDate] = useState(new Date()); // Stores only date
+  const [selectedTime, setSelectedTime] = useState(new Date()); // Stores only time
 
   // Load user-added medications from Firebase
   useEffect(() => {
@@ -52,11 +57,31 @@ const Medication = () => {
         setMedicationList([...medicationList, { label: customMedication, value: customMedication }]);
       }
 
-      await recordMedication(user.uid, finalMedication, dosage);
+      // Combine date and time into a single Date object
+      const combinedDateTime = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate(),
+        selectedTime.getHours(),
+        selectedTime.getMinutes(),
+        0
+      );
+
+      await recordMedication(user.uid, finalMedication, dosage, combinedDateTime);
       Alert.alert("Success", "Medication successfully recorded!");
     } catch (error) {
       Alert.alert("Error", error.message);
     }
+  };
+
+  // User changes the date
+  const onDateChange = (event, newDate) => {
+    if (newDate) setSelectedDate(newDate);
+  };
+
+  // User changes the time
+  const onTimeChange = (event, newTime) => {
+    if (newTime) setSelectedTime(newTime);
   };
 
 
@@ -92,7 +117,7 @@ const Medication = () => {
 
                 <View className="mt-3">
                   {/* Predefined doages */}
-                  <Text className="text-base text-black font-pmedium">Enter dosage:</Text>
+                  <Text className="font-pbold text-lg">Enter dosage:</Text>
                   <View className="flex-row justify-between mt-2">
                     <CustomButton
                       title="50mg"
@@ -131,6 +156,24 @@ const Medication = () => {
                         keyboardType="numeric"
                       />
                   </View>
+                </View>
+
+                <View className="pt-4">
+                    <Text className="font-pbold text-lg">Date & Time Taken:</Text>
+                    <View className="w-full flex-row justify-start py-2">
+                        <DateTimePicker
+                            value={selectedDate}
+                            mode={"date"}
+                            is24Hour={true}
+                            onChange={onDateChange}
+                        />
+                        <DateTimePicker
+                            value={selectedTime}
+                            mode={"time"}
+                            is24Hour={true}
+                            onChange={onTimeChange}
+                        />
+                    </View>
                 </View>
 
                 <View className="items-center">
