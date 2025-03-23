@@ -1,119 +1,88 @@
-import { View, Text, Image, Dimensions } from 'react-native';
+import { Image, Dimensions } from 'react-native';
 import React from 'react';
-import { Tabs, Redirect } from 'expo-router';
+import { Tabs } from 'expo-router';
 
 import icons from '../../constants/icons';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const TabIcon = ({icon, color, name, focused}) => {
-  return(
-    <View className="w-full items-center justify-center">
-      <View>
-        <Image 
-          source={icon}
-          resizeMode="contain"
-          tintColor={color}
-          className="w-8 h-8 mb-1"
-        />
-      </View>
-      <View>
-        <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-s text-center`} >
-          {name}
-        </Text>
-      </View>
-    </View>
-  ) 
-}
+const tabBarHeight = screenWidth < 375 ? 60 : 75; // Adaptive tab height
+
+const TabIcon = ({ icon, color }) => (
+  <Image
+    source={icon}
+    resizeMode="contain"
+    className="w-9 h-9 mb-3"
+    style={{ tintColor: color }}
+  />
+);
 
 const TabsLayout = () => {
-  const tabBarHeight = screenWidth < 375 ? 60 : 75; // Calculate tab height based on width
-  const tabWidth = screenWidth / 4; // Calculate even spacing for the 4 tab icons
   return (
-      <Tabs
+    <Tabs
       screenOptions={{
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
+        tabBarActiveTintColor: '#007AFF',
+        tabBarInactiveTintColor: '#808080',
         tabBarStyle: {
           backgroundColor: '#ADE2FF',
-          borderTopWidth: 1,
+          borderTopWidth: 1.5,
           height: tabBarHeight,
           paddingBottom: 10,
+          paddingTop: 10,
         },
         tabBarItemStyle: {
-          paddingVertical: 10,
-          paddingHorizontal: 0,
-          width: tabWidth,
-          minWidth: tabWidth,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }
+          paddingVertical: 0,
+        },
+        tabBarLabelStyle: {
+          fontSize: 14,
+          fontWeight: '600', 
+          fontFamily: 'font-psemibold', 
+          marginBottom: 5,
+        },
       }}
-      >
-        <Tabs.Screen
-          name="home"
-          options={{
-            title: 'Home',
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.home}
-                color={color}
-                name="Home"
-                focused={focused}
-              />
-            )
-          }}
-        />
+    >
+      <Tabs.Screen
+        name="home"
+        options={{
+          title: 'Home',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <TabIcon icon={icons.home} color={color} />,
+          tabBarLabel: 'Home',
+        }}
+      />
 
-        <Tabs.Screen
-          name="insights"
-          options={{
-            title: 'Insights',
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.graph}
-                color={color}
-                name="Insights"
-                focused={focused}
-              />
-            )
-          }}
-        />
+      <Tabs.Screen
+        name="insights"
+        options={{
+          title: 'Insights',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <TabIcon icon={icons.graph} color={color} />,
+          tabBarLabel: 'Insights',
+        }}
+      />
 
-        <Tabs.Screen
-          name="record"
-          options={{
-            title: 'Record',
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.plus}
-                color={color}
-                name="Record"
-                focused={focused}
-              />
-            )
-          }}
-        />
+      <Tabs.Screen
+        name="record"
+        options={{
+          title: 'Record',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <TabIcon icon={icons.plus} color={color} />,
+          tabBarLabel: 'Record',
+        }}
+      />
 
-        <Tabs.Screen
-          name="profile"
-          options={{
-            title: 'Profile',
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.profile}
-                color={color}
-                name="Profile"
-                focused={focused}
-              />
-            )
-          }}
-        />
-      </Tabs>
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <TabIcon icon={icons.profile} color={color} />,
+          tabBarLabel: 'Profile',
+        }}
+      />
+    </Tabs>
   );
-}
+};
 
-export default TabsLayout
+export default TabsLayout;
