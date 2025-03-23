@@ -6,7 +6,9 @@ import ScreenWrapper from '../../../components/ScreenWrapper'
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const ChatBot = () => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { role: "model", text: "Hi, how can I help you?", isWelcomeMessage: true } // Adds initial welcome message
+  ]);
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollViewRef = useRef();
@@ -32,13 +34,17 @@ const ChatBot = () => {
     setUserInput("");
     
     try {
+      // Filter out welcome messages when sending to API
+      const apiMessages = newMessages.filter(msg => !msg.isWelcomeMessage);
+      
       const chatSession = model.startChat({
         generationConfig,
-        history: newMessages.map(({ role, text }) => ({
+        history: apiMessages.map(({ role, text }) => ({
           role,
           parts: [{ text }],
         })),
       });
+      
       const result = await chatSession.sendMessage(userInput);
       const botResponse = result.response.text();
       setMessages([...newMessages, { role: "model", text: botResponse }]);
