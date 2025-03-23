@@ -146,7 +146,7 @@ const Profile = () => {
                 <CustomButton
                   title="Sign Out"
                   handlePress={logout}
-                  containerStyles="mt-2 w-11/12 bg-red-500 mb-4"
+                  containerStyles="mt-2 w-11/12 bg-tertiary mb-4"
                 />
 
               </KeyboardAvoidingView>

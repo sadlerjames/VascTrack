@@ -25,12 +25,6 @@ const Record = () => {
               textStyles="text-2xl"
             />  
 
-            <CustomButton
-              title="Record your Energy Levels"
-              handlePress={() => router.push('/record/energy')}
-              containerStyles="w-80 h-40 bg-quintet mt-3"
-              textStyles="text-2xl"
-            />  
 
             <CustomButton
               title="Notifications"

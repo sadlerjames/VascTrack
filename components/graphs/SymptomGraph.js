@@ -138,7 +138,7 @@ const SymptomGraph = () => {
             setContainerWidth(width);
         }}
     >
-      <Text className="font-plight text-lg pb-3">The following graph shows the change of severity of your symptom.</Text>
+      <Text className="font-plight text-lg pb-3">The following graph shows the change of severity of your symptom over the last 7 days.</Text>
       <CustomDropdown
         value={selectedSymptom}
         setValue={setSelectedSymptom}
