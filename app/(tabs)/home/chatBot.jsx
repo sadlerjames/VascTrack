@@ -1,4 +1,5 @@
 import { View, Text, TextInput, Button, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
+import Markdown from 'react-native-markdown-display';
 import React, { useState, useRef } from 'react'
 import { GEMINI_API_KEY } from '@env';
 import ScreenWrapper from '../../../components/ScreenWrapper'
@@ -69,16 +70,23 @@ const ChatBot = () => {
           >
             {messages.map((msg, index) => (
               <View key={index} style={{ marginBottom: 8, alignSelf: msg.role === "user" ? "flex-end" : "flex-start" }}>
-                <Text style={{
+                <View style={{
                   backgroundColor: msg.role === "user" ? "#3b82f6" : "#e5e7eb",
-                  color: msg.role === "user" ? "white" : "black",
                   padding: 10,
                   borderRadius: 10,
                   maxWidth: "80%",
                   alignSelf: msg.role === "user" ? "flex-end" : "flex-start"
                 }}>
-                  {msg.text}
-                </Text>
+                  <Markdown
+                    style={{
+                      body: { color: msg.role === "user" ? "white" : "black", fontSize: 16 },
+                      strong: { fontWeight: "bold" }, // Ensures **bold** text is bold
+                      list_item: { marginVertical: 5 } // Improves list spacing
+                    }}
+                  >
+                    {msg.text}
+                  </Markdown>
+                </View>
               </View>
             ))}
           </ScrollView>
