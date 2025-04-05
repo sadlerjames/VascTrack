@@ -13,6 +13,7 @@ const SymptomGraph = () => {
   const [symptoms, setSymptoms] = useState([]);
   const [customSymptoms, setCustomSymptoms] = useState([]); // Users custom symptoms
   const [selectedSymptom, setSelectedSymptom] = useState(null); // Selected symptom
+  const [selectedRange, setSelectedRange] = useState("7d"); // Last 7 days or month
   const [isFocus, setIsFocus] = useState(false);
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -76,10 +77,15 @@ const SymptomGraph = () => {
     }
   };
 
-  // Update chart data when symptom selection changes
+  // Fromat data as 'MMM D'
+  const formatDateAsWeekStart = (date) => {
+    return `${date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`;
+  };
+
+  // Update chart data when symptom selection changes + data range
   useEffect(() => {
     if (!selectedSymptom || symptoms.length === 0) return;
-    
+  
     try {
       const filteredSymptoms = symptoms
         .filter((s) => s.symptom === selectedSymptom)
@@ -88,24 +94,58 @@ const SymptomGraph = () => {
           const dateB = convertFirestoreTimestamp(b.occurredAt);
           return dateA - dateB;
         });
-
-      // Only proceed if we have data
-      if (filteredSymptoms.length === 0) {
+  
+      const now = new Date();
+      const pastDate = new Date(now);
+      pastDate.setDate(pastDate.getDate() - (selectedRange === "7d" ? 7 : 30));
+  
+      const recentSymptoms = filteredSymptoms.filter((s) => {
+        const date = convertFirestoreTimestamp(s.occurredAt);
+        return date >= pastDate;
+      });
+  
+      if (recentSymptoms.length === 0) {
         setChartData(null);
         return;
       }
-
-      // Take only the last 7 entries (or fewer if there are less than 7)
-      const recentSymptoms = filteredSymptoms.slice(0, 7);
-      
-
-      const labels = recentSymptoms.map((s) => {
-        const date = convertFirestoreTimestamp(s.occurredAt);
-        return formatDateLabel(date);
-      });
-
-      const dataPoints = recentSymptoms.map((s) => s.severity);
-      
+  
+      let labels = [];
+      let dataPoints = [];
+  
+      if (selectedRange === "7d") {
+        const last7 = recentSymptoms.slice(-7);
+        labels = last7.map((s) => formatDateLabel(convertFirestoreTimestamp(s.occurredAt)));
+        dataPoints = last7.map((s) => s.severity);
+      } else {
+        // Group into weeks
+        const weekBuckets = {};
+  
+        recentSymptoms.forEach((s) => {
+          const date = convertFirestoreTimestamp(s.occurredAt);
+          const startOfWeek = new Date(date);
+          startOfWeek.setDate(date.getDate() - date.getDay()); // Sunday start
+          const key = startOfWeek.toISOString().split('T')[0];
+  
+          if (!weekBuckets[key]) {
+            weekBuckets[key] = [];
+          }
+          weekBuckets[key].push(s.severity);
+        });
+  
+        const sortedKeys = Object.keys(weekBuckets).sort();
+  
+        labels = sortedKeys.map(dateStr => {
+          const date = new Date(dateStr);
+          return formatDateAsWeekStart(date);
+        });
+  
+        dataPoints = sortedKeys.map(key => {
+          const severities = weekBuckets[key];
+          const avg = severities.reduce((a, b) => a + b, 0) / severities.length;
+          return parseFloat(avg.toFixed(1));
+        });
+      }
+  
       setChartData({
         labels,
         datasets: [{ data: dataPoints }],
@@ -114,7 +154,8 @@ const SymptomGraph = () => {
       console.error("Error processing chart data:", error);
       setChartData(null);
     }
-  }, [selectedSymptom, symptoms]);
+  }, [selectedSymptom, symptoms, selectedRange]);
+  
 
   const chartConfig = {
     backgroundGradientFrom: "#f2f2f2",
@@ -148,32 +189,42 @@ const SymptomGraph = () => {
         placeholder="Select a symptom"
         searchPlaceholder="Search..."
       />
-      {/* <View className="mt-3">
+      <View className="mt-3">
         <CustomDropdown
-          // value={}
-          // setValue={}
+          value={selectedRange}
+          setValue={setSelectedRange}
           isFocus={isFocus}
           setIsFocus={setIsFocus}
-          data={Array.from(new Set(combinedSymptoms.map((s) => ({ label: s.label, value: s.value }))))}
-          placeholder="Last week"
+          data={[
+            { label: "Last 7 Days", value: "7d" },
+            { label: "Last Month", value: "30d" }
+          ]}
+          placeholder="Select time range"
           searchPlaceholder="Search..."
         />
-      </View> */}
+      </View>
         {loading ? (
             <ActivityIndicator size="large" color="#0000ff" />
         ) : chartData && chartData.labels.length > 0 ? (     
             <LineChart
-            data={chartData}
-            width={containerWidth > 0 ? containerWidth : 300}
-            height={220}
-            yAxisLabel=""
-            yAxisSuffix=""
-            yAxisInterval={1}
-            chartConfig={chartConfig}
-            bezier
-            segments={5}
-            style={{ marginVertical: 8, borderRadius: 10 }}
+              data={chartData}
+              width={containerWidth > 0 ? containerWidth : 300}
+              height={220}
+              yAxisLabel=""
+              yAxisSuffix=""
+              yAxisInterval={1}
+              chartConfig={chartConfig}
+              bezier
+              segments={5} // 5 segments => each step is 1 unit from 0 to 5
+              fromZero={true} // ensures it starts from 0
+              withHorizontalLabels={true}
+              yLabelsOffset={10}
+              style={{ marginVertical: 8, borderRadius: 10 }}
+              // 👇 Lock Y-axis max manually using this prop (see note below)
+              yAxisMin={0}
+              yAxisMax={5}
             />
+        
         ) : (
             <Text className="mt-4 text-gray-500">No data available</Text>
         )}
