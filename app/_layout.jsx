@@ -32,7 +32,7 @@ const RootLayout = () => {
 
   return (
     <GlobalProvider>
-      <Stack>
+      <Stack screenOptions={{ gestureEnabled: true, animationEnabled: true, }}>
         <Stack.Screen name="index" options={{headerShown: false}} />
         <Stack.Screen name="(auth)" options={{headerShown: false}} />
         <Stack.Screen name="(tabs)" options={{headerShown: false}} />
