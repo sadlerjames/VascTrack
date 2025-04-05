@@ -60,7 +60,7 @@ const ChatBot = () => {
   };
   
   return (
-    <ScreenWrapper>
+    <ScreenWrapper enableScroll={false}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}

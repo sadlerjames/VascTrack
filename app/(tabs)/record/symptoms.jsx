@@ -1,4 +1,4 @@
-import { View, Text, Alert, TextInput, ScrollView } from 'react-native'
+import { View, Text, Alert, TextInput } from 'react-native'
 import { Link, router } from 'expo-router';
 import React, { useState, useEffect } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
