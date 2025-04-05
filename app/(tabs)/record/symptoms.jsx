@@ -1,4 +1,4 @@
-import { View, Text, Alert, TextInput } from 'react-native'
+import { View, Text, Alert, TextInput, ScrollView } from 'react-native'
 import { Link, router } from 'expo-router';
 import React, { useState, useEffect } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -21,6 +21,8 @@ const Symptoms = () => {
   const [isFocus, setIsFocus] = useState(false);
   const [customSymptoms, setCustomSymptoms] = useState([]);
   const [newSymptom, setNewSymptom] = useState('');
+  const [note, setNote] = useState('');
+
 
   // Progress Bar
   const [barSelected, setBarSelected] = useState(0);
@@ -96,9 +98,10 @@ const Symptoms = () => {
             selectedTime.getMinutes()
         );
 
-        await recordSymptom(user.uid, finalSymptom, barSelected - 1, finalDateTime);
+        await recordSymptom(user.uid, finalSymptom, barSelected - 1, finalDateTime, note);
 
         Alert.alert("Success", "Symptom recorded successfully!"); 
+        setNote('');
     } catch (error) {
         Alert.alert("Error", error.message);
     }
@@ -158,6 +161,20 @@ const Symptoms = () => {
                             onChange={onTimeChange}
                         />
                     </View>
+                </View>
+
+                <View className="pt-4">
+                  <Text className="font-pbold text-lg">Add a Note (optional):</Text>
+                  <View className={`border-2  w-full min-h-16 px-4 bg-gray-300 rounded-2xl items-center flex-row border-gray-400`}>
+                    <TextInput 
+                        className="flex-1 text-black font-psemibold text-base"
+                        value={note}
+                        placeholder="e.g. Felt worse after lunch"
+                        placeholderTextColor=""
+                        multiline
+                        onChangeText={setNote}
+                    />
+                  </View>
                 </View>
 
                 <View className="items-center">
