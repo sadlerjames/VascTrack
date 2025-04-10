@@ -120,26 +120,26 @@ const Medication = () => {
                   <Text className="font-pbold text-lg">Enter dosage:</Text>
                   <View className="flex-row justify-between mt-2">
                     <CustomButton
-                      title="50mg"
-                      handlePress={() => setDosage("50mg")}
+                      title="1mg"
+                      handlePress={() => setDosage("1mg")}
                       containerStyles="bg-secondary px-2 py-1 mr-1"
                       textStyles="text-sm"
                     />
                     <CustomButton
-                      title="100mg"
-                      handlePress={() => setDosage("100mg")}
+                      title="5mg"
+                      handlePress={() => setDosage("5mg")}
                       containerStyles="bg-secondary px-2 py-1 mr-1"
                       textStyles="text-sm"
                     />
                     <CustomButton
-                      title="250mg"
-                      handlePress={() => setDosage("250mg")}
+                      title="10mg"
+                      handlePress={() => setDosage("10mg")}
                       containerStyles="bg-secondary px-2 py-1 mr-1"
                       textStyles="text-sm"
                     />
                     <CustomButton
-                      title="500mg"
-                      handlePress={() => setDosage("500mg")}
+                      title="30mg"
+                      handlePress={() => setDosage("30mg")}
                       containerStyles="bg-secondary px-2 py-1"
                       textStyles="text-sm"
                     />
@@ -150,7 +150,7 @@ const Medication = () => {
                     <FormField
                         title=""
                         value={dosage}
-                        placeholder="E.g. 500mg"
+                        placeholder="E.g. 1mg"
                         handleChangeText={setDosage}
                         otherStyles=""
                         keyboardType="numeric"
