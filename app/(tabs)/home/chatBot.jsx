@@ -34,8 +34,16 @@ const ChatBot = () => {
     setUserInput("");
     
     try {
+      // Inform the chatbot that patients using this are vasculitis patients so responses are tailoured
       // Filter out welcome messages when sending to API
-      const apiMessages = newMessages.filter(msg => !msg.isWelcomeMessage);
+      const apiMessages = [
+        {
+          role: "user",
+          text: "Note: This chatbot is being used by individuals with vasculitis. Please tailor all responses to be relevant, clear, and supportive for people managing this condition.",
+        },
+        ...newMessages.filter(msg => !msg.isWelcomeMessage)
+      ];
+      
       
       const chatSession = model.startChat({
         generationConfig,
