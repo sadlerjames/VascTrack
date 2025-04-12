@@ -6,6 +6,7 @@ import ScreenWrapper from '../../components/ScreenWrapper'
 import CustomButton from '../../components/CustomButton'
 import SymptomGraph from '../../components/graphs/SymptomGraph';
 import EnergyGraph from '../../components/graphs/EnergyGraph';
+import EnergyHeatMap from '../../components/graphs/EnergyHeatMap';
 
 const Insights = () => {
   return (
@@ -24,6 +25,14 @@ const Insights = () => {
             <Text className="text-2xl font-pbold text-center">Energy Levels</Text>
             <View className="pt-5">
               <EnergyGraph />
+            </View>
+          </View>
+
+
+          <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
+            <Text className="text-2xl font-pbold text-center">Energy Heat Map</Text>
+            <View className="pt-5">
+              <EnergyHeatMap />
             </View>
           </View>
           
