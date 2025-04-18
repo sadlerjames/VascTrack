@@ -4,7 +4,7 @@ import { LineChart } from 'react-native-chart-kit'
 
 import CustomDropdown from '../CustomDropdown'
 import { fetchCustomSymptoms, fetchUserSymptoms } from '../../lib/fetch'
-import { predefinedSymptoms } from '../../lib/data/symptomData'
+import { predefinedSymptoms } from '../../constants/symptomData'
 import { useGlobalContext } from '../../context/GlobalProvider'
 
 

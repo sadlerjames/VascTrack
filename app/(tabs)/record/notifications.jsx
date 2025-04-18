@@ -8,7 +8,7 @@ import CustomDropdown from '../../../components/CustomDropdown';
 import CustomButton from '../../../components/CustomButton';
 
 import { getUserMedications } from '../../../lib/fetch';
-import { predefinedMedications } from '../../../lib/medicationData';
+import { predefinedMedications } from '../../../constants/medicationData';
 import { useGlobalContext } from '../../../context/GlobalProvider';
 
 // Configure notifications

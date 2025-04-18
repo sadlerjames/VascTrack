@@ -6,7 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { recordMedication, saveUserMedication } from '../../../lib/recording';
 import { getUserMedications } from '../../../lib/fetch'
 import { useGlobalContext } from '../../../context/GlobalProvider';
-import { predefinedMedications } from '../../../lib/medicationData'
+import { predefinedMedications } from '../../../constants/medicationData'
 
 import ScreenWrapper from '../../../components/ScreenWrapper'
 import CustomButton from '../../../components/CustomButton'

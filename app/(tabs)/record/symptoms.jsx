@@ -12,6 +12,7 @@ import FormField from '../../../components/FormField'
 import { recordSymptom, saveCustomSymptom } from '../../../lib/recording';
 import { fetchCustomSymptoms } from '../../../lib/fetch'
 import { useGlobalContext } from '../../../context/GlobalProvider';
+import { predefinedSymptoms } from '../../../constants/symptomData'
 
 const Symptoms = () => {    
   // Get user
@@ -44,17 +45,6 @@ const Symptoms = () => {
     };
     loadCustomSymptoms();
   }, [user]);
-
-  const predefinedSymptoms = [
-    { label: "Headache", value: "Headache" },
-    { label: "Fatigue", value: "Fatigue" },
-    { label: "Nausea", value: "Nausea" },
-    { label: "Dizziness", value: "Dizziness" },
-    { label: "Cough", value: "Cough" },
-    { label: "Shortness of Breath", value: "Shortness of Breath" },
-    { label: "Chest Pain", value: "Chest Pain" },
-    { label: "Muscle Aches", value: "Muscle Aches" }
-  ];
 
   const combinedSymptoms = [
     ...predefinedSymptoms,
