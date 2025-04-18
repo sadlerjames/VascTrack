@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, Alert } from 'react-native'
 import { router } from 'expo-router';
 import React, { useEffect, useState, useRef } from 'react'
 
@@ -60,6 +60,7 @@ const Insights = () => {
       await Sharing.shareAsync(uri);
     } catch (err) {
       console.error("Failed to generate PDF:", err);
+      Alert.alert("Error", "Failed to generate PDF!");
     }
   };
 
