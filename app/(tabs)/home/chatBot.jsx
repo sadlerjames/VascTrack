@@ -69,18 +69,19 @@ const ChatBot = () => {
   
   return (
     <ScreenWrapper enableScroll={false}>
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 200 : 0}
       >
         <View className="flex-1 p-3">
           {/* Chat History */}
-          <ScrollView 
+          <ScrollView
             ref={scrollViewRef}
-            style={{ flex: 1, marginBottom: 10 }}
             contentContainerStyle={{ paddingBottom: 10 }}
             onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
+            keyboardShouldPersistTaps="handled"
+            style={{ flex: 1 }}
           >
             {messages.map((msg, index) => (
               <View key={index} style={{ marginBottom: 8, alignSelf: msg.role === "user" ? "flex-end" : "flex-start" }}>
@@ -95,7 +96,7 @@ const ChatBot = () => {
                     style={{
                       body: { color: msg.role === "user" ? "white" : "black", fontSize: 16 },
                       strong: { fontWeight: "bold" },
-                      list_item: { marginVertical: 5 } // Improves list spacing
+                      list_item: { marginVertical: 5 }
                     }}
                   >
                     {msg.text}
@@ -104,9 +105,9 @@ const ChatBot = () => {
               </View>
             ))}
           </ScrollView>
-          
+
           {/* Input & Send Button */}
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
             <TextInput
               style={{
                 flex: 1,
@@ -119,6 +120,12 @@ const ChatBot = () => {
               placeholder="Ask me anything..."
               value={userInput}
               onChangeText={setUserInput}
+              multiline={true}
+              autoCorrect={true}
+              autoComplete="sentence"
+              spellCheck={true}
+              textContentType="none"
+              keyboardType="default"
             />
             <Button title={loading ? "..." : "Send"} onPress={handleSendMessage} disabled={loading} />
           </View>
