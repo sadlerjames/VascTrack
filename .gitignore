@@ -39,3 +39,5 @@ yarn-error.*
 #ios compilation
 ios/
 
+#android compilation
+android/
