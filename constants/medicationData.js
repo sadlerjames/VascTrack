@@ -1,4 +1,3 @@
-// medicationData.js
 export const predefinedMedications = [
     { label: "Paracetamol", value: "Paracetamol" },
     { label: "Ibuprofen", value: "Ibuprofen" },
