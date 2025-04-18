@@ -1,4 +1,4 @@
-import { View, Text, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Modal, SafeAreaView } from 'react-native';
+import { View, Text, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Modal, FlatList } from 'react-native';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 
@@ -17,8 +17,14 @@ const Profile = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
-
   const [tempDate, setTempDate] = useState(new Date());
+  const [showSexPicker, setShowSexPicker] = useState(false);
+
+  const sexOptions = [
+    { label: "Male", value: "male" },
+    { label: "Female", value: "female" },
+    { label: "Other", value: "other" }
+  ];
 
   const [form, setForm] = useState({
     firstName: '',
@@ -138,6 +144,7 @@ const Profile = () => {
                   keyboardType="email-address"
                 />
 
+                {/* DOB Picker */}
                 <Text className="text-base text-black font-pmedium mt-7">Date of Birth</Text>
                 <TouchableOpacity 
                     onPress={() => setShowDatePicker(true)}
@@ -150,60 +157,98 @@ const Profile = () => {
                 </TouchableOpacity>
 
                 {showDatePicker && (
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={showDatePicker}
-                >
-                  <View className="flex-1 justify-end bg-black/50">
-                    <View className="bg-white p-4 rounded-t-xl">
-                      <View className="flex-row justify-between mb-4">
-                        <TouchableOpacity onPress={() => setShowDatePicker(false)}>
-                          <Text className="text-blue-500 font-bold text-lg">Cancel</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {
-                          setShowDatePicker(false);
-                          setForm({ ...form, dob: tempDate.toISOString().split('T')[0] });
-                        }}>
-                          <Text className="text-blue-500 font-bold text-lg">Confirm</Text>
-                        </TouchableOpacity>
+                  <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={showDatePicker}
+                  >
+                    <View className="flex-1 justify-end bg-black/50">
+                      <View className="bg-white p-4 rounded-t-xl">
+                        <View className="flex-row justify-between mb-4">
+                          <TouchableOpacity onPress={() => setShowDatePicker(false)}>
+                            <Text className="text-blue-500 font-bold text-lg">Cancel</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity onPress={() => {
+                            setShowDatePicker(false);
+                            setForm({ ...form, dob: tempDate.toISOString().split('T')[0] });
+                          }}>
+                            <Text className="text-blue-500 font-bold text-lg">Confirm</Text>
+                          </TouchableOpacity>
+                        </View>
+                        
+                        <DateTimePicker
+                          value={tempDate}
+                          mode="date"
+                          display="spinner"
+                          onChange={(event, selectedDate) => {
+                            if (selectedDate) {
+                              setTempDate(selectedDate);
+                            }
+                          }}
+                          style={{ height: 200 }}
+                        />
+                        {/* Extra white padding on the bottom */}
+                        <View className="h-10 bg-white" /> 
                       </View>
-                      
-                      <DateTimePicker
-                        value={tempDate}
-                        mode="date"
-                        display="spinner"
-                        onChange={(event, selectedDate) => {
-                          if (selectedDate) {
-                            setTempDate(selectedDate);
-                          }
-                        }}
-                        style={{ height: 200 }}
-                      />
-                      {/* Extra white padding on the bottom */}
-                      <View className="h-10 bg-white" /> 
                     </View>
-                  </View>
-                </Modal>
-              )}
+                  </Modal>
+                )}
 
-                {/* Sex Selection */}
-                <View className="mt-2">
-                    <Text className="text-base text-black font-pmedium">Sex</Text>
-                    <View className="border-2 border-gray-400 rounded-lg h-10">
-                      <Picker
-                        selectedValue={form.sex}
-                        onValueChange={(value) => setForm({ ...form, sex: value })}
-                        style={{ height: '100%', width: '100%' }}
-                        mode="dropdown"
-                      >
-                        <Picker.Item label="Select" value="" />
-                        <Picker.Item label="Male" value="male" />
-                        <Picker.Item label="Female" value="female" />
-                        <Picker.Item label="Other" value="other" />
-                      </Picker>
+                {/* Sex Picker */}
+                <View className="mt-7">
+                  <Text className="text-base text-black font-pmedium">Sex</Text>
+                  <TouchableOpacity
+                    onPress={() => setShowSexPicker(true)}
+                    activeOpacity={0.7}
+                    className="border-2 border-gray-400 rounded-xl h-16 justify-center px-4 bg-gray-300"
+                  >
+                    <Text className="text-black font-psemibold text-base">
+                      {form.sex ? sexOptions.find(option => option.value === form.sex)?.label : "Select"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                {showSexPicker && (
+                  <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={showSexPicker}
+                  >
+                    <View className="flex-1 justify-end bg-black/50">
+                      <View className="bg-white rounded-t-xl">
+                        <View className="p-4 border-b border-gray-200">
+                          <Text className="text-black font-bold text-xl text-center">Select Sex</Text>
+                        </View>
+                        
+                        <FlatList
+                          data={sexOptions}
+                          keyExtractor={(item) => item.value}
+                          renderItem={({ item }) => (
+                            <TouchableOpacity
+                              className={`p-4 border-b border-gray-100 ${form.sex === item.value ? 'bg-gray-100' : ''}`}
+                              onPress={() => {
+                                setForm({ ...form, sex: item.value });
+                                setShowSexPicker(false);
+                              }}
+                            >
+                              <Text className="text-black text-lg text-center">{item.label}</Text>
+                            </TouchableOpacity>
+                          )}
+                        />
+                        
+                        <TouchableOpacity
+                          className="p-4 border-t border-gray-200"
+                          onPress={() => setShowSexPicker(false)}
+                        >
+                          <Text className="text-blue-500 font-bold text-lg text-center">Cancel</Text>
+                        </TouchableOpacity>
+                        
+                        {/* Extra padding view to extend white background to bottom of screen */}
+                        <View className="h-10 bg-white" />
+                      </View>
                     </View>
-                  </View>
+                  </Modal>
+                )}
 
                 <FormField
                   title="New Password"
