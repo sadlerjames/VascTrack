@@ -1,4 +1,4 @@
-import { View, Text, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Modal, SafeAreaView } from 'react-native';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 
@@ -17,6 +17,8 @@ const Profile = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const [tempDate, setTempDate] = useState(new Date());
 
   const [form, setForm] = useState({
     firstName: '',
@@ -50,6 +52,15 @@ const Profile = () => {
 
     loadUserData();
   }, [user]);
+
+  // Format the date at day/month/year
+  const formatDate = (date) => {
+    if (!date) return "";
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
 
   const handleUpdateProfile = async () => {
     if (!form.firstName || !form.lastName || !form.email) {
@@ -127,29 +138,57 @@ const Profile = () => {
                   keyboardType="email-address"
                 />
 
-                {/* Date of Birth */}
                 <Text className="text-base text-black font-pmedium mt-7">Date of Birth</Text>
-                <CustomButton
-                  title={form.dob ? form.dob : "Select Date"}
-                  handlePress={() => setShowDatePicker(true)}
-                  containerStyles="mt-2 bg-gray-300 border-2 border-gray-400"
-                />
+                <TouchableOpacity 
+                    onPress={() => setShowDatePicker(true)}
+                    activeOpacity={0.7}
+                    className={`rounded-xl h-16 justify-center px-4 bg-gray-300 border-2 border-gray-400`}
+                >
+                    <Text className={`text-black font-psemibold text-base`}>
+                      {form.dob ? formatDate(new Date(form.dob)) : "Select Date"}
+                    </Text>
+                </TouchableOpacity>
+
                 {showDatePicker && (
-                  <DateTimePicker
-                    value={form.dob ? new Date(form.dob) : new Date()}
-                    mode="date"
-                    display="default"
-                    onChange={(event, selectedDate) => {
-                      setShowDatePicker(false);
-                      if (selectedDate) {
-                        setForm({ ...form, dob: selectedDate.toISOString().split('T')[0] });
-                      }
-                    }}
-                  />
-                )}
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={showDatePicker}
+                >
+                  <View className="flex-1 justify-end bg-black/50">
+                    <View className="bg-white p-4 rounded-t-xl">
+                      <View className="flex-row justify-between mb-4">
+                        <TouchableOpacity onPress={() => setShowDatePicker(false)}>
+                          <Text className="text-blue-500 font-bold text-lg">Cancel</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                          setShowDatePicker(false);
+                          setForm({ ...form, dob: tempDate.toISOString().split('T')[0] });
+                        }}>
+                          <Text className="text-blue-500 font-bold text-lg">Confirm</Text>
+                        </TouchableOpacity>
+                      </View>
+                      
+                      <DateTimePicker
+                        value={tempDate}
+                        mode="date"
+                        display="spinner"
+                        onChange={(event, selectedDate) => {
+                          if (selectedDate) {
+                            setTempDate(selectedDate);
+                          }
+                        }}
+                        style={{ height: 200 }}
+                      />
+                      {/* Extra white padding on the bottom */}
+                      <View className="h-10 bg-white" /> 
+                    </View>
+                  </View>
+                </Modal>
+              )}
 
                 {/* Sex Selection */}
-                <View className="mt-7">
+                <View className="mt-2">
                     <Text className="text-base text-black font-pmedium">Sex</Text>
                     <View className="border-2 border-gray-400 rounded-lg h-10">
                       <Picker
