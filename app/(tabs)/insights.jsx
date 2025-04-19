@@ -10,6 +10,7 @@ import CustomButton from '../../components/CustomButton';
 import SymptomGraph from '../../components/graphs/SymptomGraph';
 import EnergyGraph from '../../components/graphs/EnergyGraph';
 import EnergyHeatMap from '../../components/graphs/EnergyHeatMap';
+import MedicationEffectivenessGraph from '../../components/graphs/MedicationEffectivenessGraph';
 
 // Packages for PDF generation
 import ViewShot from "react-native-view-shot";
@@ -25,6 +26,7 @@ const Insights = () => {
   const symptomRef = useRef();
   const energyRef = useRef();
   const heatmapRef = useRef();
+  const medicationEffectiveness = useRef();
 
   const generatePDF = async () => {
     try {
@@ -108,6 +110,15 @@ const Insights = () => {
                 ) : (
                   <Text>Loading...</Text>
                 )}
+              </View>
+            </ViewShot>
+          </Card>
+
+          <Card>
+          <Text className="text-2xl font-pbold text-center">Medication Effectiveness Insight</Text>
+            <ViewShot ref={medicationEffectiveness} options={{ format: "png", quality: 1 }}>
+              <View className="pt-5">
+                <MedicationEffectivenessGraph />
               </View>
             </ViewShot>
           </Card>
