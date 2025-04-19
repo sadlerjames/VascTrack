@@ -7,6 +7,7 @@ import { useGlobalContext } from '../../context/GlobalProvider';
 import { updateUserProfile, updateUserPassword } from '../../lib/update';
 import { fetchUserDetails } from '../../lib/fetch';
 
+import Card from '../../components/Card';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -118,7 +119,7 @@ const Profile = () => {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             className="w-full h-full items-center justify-center flex-1"
           >
-            <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
+            <Card>
               <View className="w-full justify-center px-4 my-3">
                 <Text className="text-2xl text-center text-black font-psemibold">Edit Profile</Text>
 
@@ -273,7 +274,7 @@ const Profile = () => {
                   isLoading={isSubmitting}
                 />
               </View>
-            </View>
+            </Card>
 
             <CustomButton
               title="Sign Out"

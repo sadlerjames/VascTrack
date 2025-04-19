@@ -5,6 +5,7 @@ import ScreenWrapper from '../../../components/ScreenWrapper'
 import { recordEnergy } from '../../../lib/recording';
 import { useGlobalContext } from '../../../context/GlobalProvider';
 
+import Card from '../../../components/Card';
 import ProgressBar from '../../../components/ProgressBar'
 import CustomButton from '../../../components/CustomButton'
 
@@ -36,7 +37,7 @@ const Energy = () => {
     <ScreenWrapper>
       <View className="flex-1 items-center justify-center">
 
-        <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
+        <Card>
           <Text className="text-2xl font-pbold text-center">How much energy do you have?</Text>
           <ProgressBar selected={barSelected} setSelected={setBarSelected} containerStyle="pt-5 pb-3" />
           
@@ -49,7 +50,7 @@ const Energy = () => {
             />  
           </View>
 
-        </View>
+        </Card>
 
       </View>
     </ScreenWrapper>

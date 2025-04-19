@@ -1,11 +1,12 @@
-import { View, Text, Alert } from 'react-native'
+import { View, Text, Alert } from 'react-native';
 import { router } from 'expo-router';
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react';
 
 import { fetchUserEnergyLevels } from '../../lib/fetch';
 
-import ScreenWrapper from '../../components/ScreenWrapper'
-import CustomButton from '../../components/CustomButton'
+import ScreenWrapper from '../../components/ScreenWrapper';
+import Card from '../../components/Card';
+import CustomButton from '../../components/CustomButton';
 import SymptomGraph from '../../components/graphs/SymptomGraph';
 import EnergyGraph from '../../components/graphs/EnergyGraph';
 import EnergyHeatMap from '../../components/graphs/EnergyHeatMap';
@@ -79,26 +80,26 @@ const Insights = () => {
       <View className="flex-1 items-center justify-center">
         <View className="items-center justify-center w-full h-full" >
 
-          <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
+          <Card>
             <Text className="text-2xl font-pbold text-center">Symptom Severity</Text>
             <ViewShot ref={symptomRef} options={{ format: "png", quality: 1 }}>
               <View className="pt-5">
                 <SymptomGraph />
               </View>
             </ViewShot>
-          </View>
+          </Card>
 
-          <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
+          <Card>
             <Text className="text-2xl font-pbold text-center">Energy Levels</Text>
             <ViewShot ref={energyRef} options={{ format: "png", quality: 1 }}>
               <View className="pt-5">
                 <EnergyGraph />
               </View>
             </ViewShot>
-          </View>
+          </Card>
 
 
-          <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
+          <Card>
             <Text className="text-2xl font-pbold text-center">Energy Heat Map</Text>
             <ViewShot ref={heatmapRef} options={{ format: "png", quality: 1 }}>
               <View className="pt-5">
@@ -109,7 +110,7 @@ const Insights = () => {
                 )}
               </View>
             </ViewShot>
-          </View>
+          </Card>
 
           <View className="my-5">
             <CustomButton 

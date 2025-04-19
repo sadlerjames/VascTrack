@@ -8,6 +8,7 @@ import { getUserMedications } from '../../../lib/fetch'
 import { useGlobalContext } from '../../../context/GlobalProvider';
 import { predefinedMedications } from '../../../constants/medicationData'
 
+import Card from '../../../components/Card';
 import ScreenWrapper from '../../../components/ScreenWrapper'
 import CustomButton from '../../../components/CustomButton'
 import CustomDropdown from '../../../components/CustomDropdown'
@@ -89,7 +90,7 @@ const Medication = () => {
     <ScreenWrapper>
         <View className="flex-1 items-center justify-center">
 
-            <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
+          <Card>
                 <Text className="text-2xl font-pbold text-center">What medication did you take?</Text>
                 
                 <View className="pt-3 pb-2">
@@ -185,7 +186,7 @@ const Medication = () => {
                     />  
                 </View>
 
-            </View>
+          </Card>
         </View>
     </ScreenWrapper>
   )

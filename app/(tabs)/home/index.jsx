@@ -1,10 +1,11 @@
-import { View, Text, Image, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import { router } from 'expo-router';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import ScreenWrapper from '../../../components/ScreenWrapper'
-import CustomButton from '../../../components/CustomButton'
+import ScreenWrapper from '../../../components/ScreenWrapper';
+import CustomButton from '../../../components/CustomButton';
+import Card from '../../../components/Card';
 import ProgressBar from '../../../components/ProgressBar';
 import { useGlobalContext } from '../../../context/GlobalProvider';
 import { recordEnergy } from '../../../lib/recording';
@@ -75,7 +76,7 @@ const Home = () => {
   return (
     <ScreenWrapper>
       <View className="flex-1 items-center">
-        <View className="w-11/12 bg-primary p-6 rounded-2xl shadow-sm shadow-primary mb-4">
+        <Card>
           <Text className="text-2xl font-pbold text-center">How much energy do you have?</Text>
           <ProgressBar selected={barSelected} setSelected={setBarSelected} containerStyle="pt-5 pb-3" />
 
@@ -87,7 +88,7 @@ const Home = () => {
               textStyles="text-2xl"
             />  
           </View>
-        </View>
+        </Card>
 
         {/* Row of Two Cards */}
         <View className="flex-row w-11/12 justify-between">
