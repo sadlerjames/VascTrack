@@ -1,9 +1,9 @@
 import { View, Text, ScrollView, Image, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Link, router } from 'expo-router';
 
-import { getCurrentUser, signIn } from '../../lib/authentication';
+import { getCurrentUser, signIn, signInWithGoogle } from '../../lib/authentication';
 import { useGlobalContext } from "../../context/GlobalProvider";
 
 import images from '../../constants/images';
@@ -43,6 +43,18 @@ const submit = async () => {
     setIsSubmitting(false); // loading has finished
   }
 }
+
+const googleSignIn = async () => {
+  try {
+    const googleUser = await signInWithGoogle();
+    setUser(googleUser);
+    setisLoggedIn(true);
+    router.replace('/home');
+  } catch (error) {
+    Alert.alert("Google Sign-In Failed", error.message);
+  }
+};
+
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -85,6 +97,14 @@ const submit = async () => {
             <Text className="font-psemibold text-lg">Don't have an account?</Text>
             <Link href="/sign-up" className="font-pbold text-lg text-quaternary">Sign Up</Link>
           </View>
+
+          <CustomButton
+            title="Sign In with Google"
+            handlePress={googleSignIn}
+            containerStyles="mt-4 bg-white"
+            textStyles="text-black"
+          />
+
         </View>
       </ScrollView>
 

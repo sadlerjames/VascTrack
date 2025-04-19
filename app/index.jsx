@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { ScrollView, Text, View, Image } from 'react-native';
 import { Redirect, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import { useGlobalContext } from '../context/GlobalProvider';
 
@@ -10,6 +11,11 @@ import CustomButton from "../components/CustomButton";
 
 export default function App() {
   const { isLoading, isLoggedIn } = useGlobalContext();
+
+  GoogleSignin.configure({
+    webClientId: '539638506625-89pnuvb9mj5am8fo6us7m316sn9ve3d3.apps.googleusercontent.com',
+    iosClientId: '539638506625-7haklj7r5jj93dp3828jb368k0vqemj8.apps.googleusercontent.com',
+  });
 
   if(!isLoading && isLoggedIn) return <Redirect href="/home" />
 
