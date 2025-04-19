@@ -25,29 +25,39 @@ const SignUp = () => {
 
 
 const submit = async () => {
-  if(!form.email || !form.password || !form.firstName || !form.lastName) {
+  if(!form.email || !form.password || !form.confirmPassword || !form.firstName || !form.lastName) {
     Alert.alert('Error', 'Please fill in all the fields!');
   }
 
   setIsSubmitting(true);
 
-  try {
+  if (form.password == form.confirmPassword) {
+    try {
 
-    const result = await createUser(form.email, form.password, form.firstName, form.lastName);
-    
-    if (result) {
-      setUser(result);
-      setisLoggedIn(true);
-      router.replace('/home');
+      const result = await createUser(form.email, form.password, form.firstName, form.lastName);
+      
+      if (result) {
+        setUser(result);
+        setisLoggedIn(true);
+        router.replace('/home');
+      }
+      
+    } catch (error) {
+      // Handle firebase error message with custom response
+      if (error.message.includes('Password should be at least 6 characters')) {
+        Alert.alert('Error', 'Password should be at least 6 characters. Please choose a longer password!');
+      } else {
+        Alert.alert('Error', error.message);
+      }
+    } finally {
+      setIsSubmitting(false); // loading has finished
     }
-    
-  } catch (error) {
-    Alert.alert('Error', error.message);
-  } finally {
-    setIsSubmitting(false); // loading has finished
+
+  } else {
+    Alert.alert('Error', 'Passwords do not match! Please enter the same password.');
+    setIsSubmitting(false);
   }
 
-  
 }
 
   return (
