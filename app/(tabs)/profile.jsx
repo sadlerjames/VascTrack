@@ -1,17 +1,18 @@
 import { View, Text, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Modal, FlatList } from 'react-native';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Picker } from '@react-native-picker/picker';
 
 import ScreenWrapper from '../../components/ScreenWrapper';
 import { useGlobalContext } from '../../context/GlobalProvider';
 import { updateUserProfile, updateUserPassword } from '../../lib/update';
 import { fetchUserDetails } from '../../lib/fetch';
+import { deleteAccount } from '../../lib/delete';
 
 import Card from '../../components/Card';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { Picker } from '@react-native-picker/picker';
 
 const Profile = () => {
   const { user, setUser, logout } = useGlobalContext();
@@ -110,6 +111,32 @@ const Profile = () => {
       setIsSubmitting(false);
     }
   };
+
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      "Delete Account",
+      "Are you sure you want to delete your account? This action is permanent.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await deleteAccount();
+              await logout();        
+            } catch (error) {
+              console.error("Error during account deletion:", error);
+              Alert.alert("Error", "Failed to delete account.");
+            }
+          }
+        }
+      ]
+    );
+  };
+  
+
+
 
   return (
     <ScreenWrapper>
@@ -280,6 +307,12 @@ const Profile = () => {
               title="Sign Out"
               handlePress={logout}
               containerStyles="mt-2 w-11/12 bg-tertiary mb-4"
+            />
+
+            <CustomButton
+              title="Delete Account"
+              handlePress={handleDeleteAccount}
+              containerStyles="mt-2 w-11/12 bg-red-400 mb-4"
             />
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
