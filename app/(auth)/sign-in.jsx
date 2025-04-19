@@ -10,6 +10,7 @@ import images from '../../constants/images';
 
 import FormField from "../../components/FormField";
 import CustomButton from "../../components/CustomButton";
+import GoogleSignIn from '../../components/GoogleSignIn';
 
 const SignIn = () => {
   const { setUser, setisLoggedIn } = useGlobalContext();
@@ -98,12 +99,11 @@ const googleSignIn = async () => {
             <Link href="/sign-up" className="font-pbold text-lg text-quaternary">Sign Up</Link>
           </View>
 
-          <CustomButton
-            title="Sign In with Google"
+          <GoogleSignIn
             handlePress={googleSignIn}
-            containerStyles="mt-4 bg-white"
-            textStyles="text-black"
+            containerStyles="mt-3"
           />
+
 
         </View>
       </ScrollView>

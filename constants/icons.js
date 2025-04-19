@@ -5,6 +5,7 @@ import profile from "../assets/icons/Profile.png";
 import eye from "../assets/icons/eye.png";
 import eyeSlash from "../assets/icons/eye-slash.png";
 import robot from "../assets/icons/robot.png";
+import googleIcon from "../assets/icons/google-logo.png";
 
 export default {
     graph,
@@ -13,5 +14,6 @@ export default {
     profile,
     eye,
     eyeSlash,
-    robot
+    robot,
+    googleIcon
 }

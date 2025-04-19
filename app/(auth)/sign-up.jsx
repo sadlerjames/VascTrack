@@ -3,11 +3,12 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Link, router } from 'expo-router';
 
-import { createUser } from '../../lib/authentication';
+import { createUser, signInWithGoogle } from '../../lib/authentication';
 import { useGlobalContext } from "../../context/GlobalProvider";
 
 import FormField from "../../components/FormField";
 import CustomButton from "../../components/CustomButton";
+import GoogleSignIn from '../../components/GoogleSignIn';
 
 import images from '../../constants/images';
 
@@ -59,6 +60,17 @@ const submit = async () => {
   }
 
 }
+
+const googleSignIn = async () => {
+  try {
+    const googleUser = await signInWithGoogle();
+    setUser(googleUser);
+    setisLoggedIn(true);
+    router.replace('/home');
+  } catch (error) {
+    Alert.alert("Google Sign-In Failed", error.message);
+  }
+};
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -130,6 +142,11 @@ const submit = async () => {
                 <Text className="font-psemibold text-lg">Already have an account?</Text>
                 <Link href="/sign-in" className="font-pbold text-lg text-quaternary">Sign In</Link>
               </View>
+
+              <GoogleSignIn
+                handlePress={googleSignIn}
+                containerStyles="mt-3"
+              />
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
