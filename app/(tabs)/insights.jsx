@@ -125,19 +125,23 @@ const Insights = () => {
             </ViewShot>
           </Card>
 
-          <View className="my-5">
-            <CustomButton 
-              title="Generate PDF Report" 
-              containerStyles="bg-tertiary"
-              handlePress={generatePDF} />
-          </View>
 
-          <View className="my-5">
+          <Card>
+            <Text className="text-2xl font-pbold text-center">Generate Health Report</Text>
+            <Text className="font-plight text-lg pb-3 pt-3 text-center">Scroll up and explore the different graphs using the dropdowns. The report will include whichever graph combinations are currently visible on the screen. Once you're ready, tap the button below to generate your personalized PDF report.</Text>
+            <CustomButton 
+              title="Generate" 
+              containerStyles="bg-tertiary w-full"
+              handlePress={generatePDF} />
+            </Card>
+          
+
+          {/* <View className="my-5">
             <CustomButton 
               title="Generate Data for Medications and Symptoms" 
               containerStyles="bg-tertiary"
               handlePress={seedManualMedEffectivenessData} />
-          </View>
+          </View> */}
           
         </View>
       </View>
