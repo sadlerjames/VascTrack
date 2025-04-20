@@ -166,7 +166,11 @@ const MedicationEffectivenessGraph = () => {
           segments={5}
           yAxisMin={0}
           yAxisMax={5}
+          yAxisSuffix="" // Remove any suffix
+          // yAxisInterval={1} // Ensure interval is 1
           style={{ marginVertical: 8, borderRadius: 10 }}
+          // This is important to ensure axis labels are exactly at 0, 1, 2, 3, 4, 5
+          // formatYLabel={(value) => Math.round(value).toString()}
         />
       ) : (
         <Text className="mt-4 text-gray-500">No data available</Text>
