@@ -68,9 +68,6 @@ const MedicationEffectivenessGraph = () => {
   useEffect(() => {
     if (!dataLoaded || !selectedSymptom || !selectedMedication) return;
 
-    console.log("Data has successffully been got!");
-    console.log(medLogs);
-
     const timeBuckets = Array.from({ length: 13 }, (_, i) => i * 2); // 0, 2, 4, ..., 24
     const bucketedData = timeBuckets.map(() => []);
 
@@ -102,9 +99,6 @@ const MedicationEffectivenessGraph = () => {
       const avg = bucket.reduce((a, b) => a + b, 0) / bucket.length;
       return parseFloat(avg.toFixed(1));
     });
-
-    console.log("end of processing script")
-    console.log(dataPoints);
 
     setChartData({
       labels,

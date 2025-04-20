@@ -128,7 +128,7 @@ const EnergyGraph = () => {
         const dataPoints = allDays.map(day => {
           const entries = entriesByDay[day.dateString];
           if (!entries || entries.length === 0) {
-            return null; // No data for this day
+            return -1; // No data for this day
           }
           
           // Calculate average
@@ -178,7 +178,7 @@ const EnergyGraph = () => {
         });
   
         const dataPoints = weeks.map((week) => {
-          if (week.length === 0) return null; // Change to null if no data
+          if (week.length === 0) return -1; // Change to null if no data
           const total = week.reduce((sum, e) => sum + e.energyLevel, 0);
           return Math.round(total / week.length);
         });
