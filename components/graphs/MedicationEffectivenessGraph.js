@@ -7,6 +7,8 @@ import { useGlobalContext } from '../../context/GlobalProvider';
 import { fetchUserSymptoms, fetchCustomSymptoms, getUserMedications, fetchUserMedicationLogs } from '../../lib/fetch';
 import { predefinedSymptoms } from '../../constants/symptomData'
 import { predefinedMedications } from '../../constants/medicationData'
+import { convertFirestoreTimestamp } from '../../lib/utility/convertFirestoreTimestamp';
+import { differenceInHours } from '../../lib/utility/diffHours';
 
 
 const MedicationEffectivenessGraph = () => {
@@ -23,6 +25,7 @@ const MedicationEffectivenessGraph = () => {
 
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [containerWidth, setContainerWidth] = useState(0);
   const [isSymptomFocus, setIsSymptomFocus] = useState(false);
   const [isMedicationFocus, setIsMedicationFocus] = useState(false);
@@ -44,6 +47,7 @@ const MedicationEffectivenessGraph = () => {
       setMedLogs(medData);
             
       setLoading(false);
+      setDataLoaded(true);
     };
 
     loadData();
@@ -62,20 +66,29 @@ const MedicationEffectivenessGraph = () => {
   ];
 
   useEffect(() => {
-    if (!selectedSymptom || !selectedMedication) return;
+    if (!dataLoaded || !selectedSymptom || !selectedMedication) return;
+
+    console.log("Data has successffully been got!");
+    console.log(medLogs);
 
     const timeBuckets = Array.from({ length: 13 }, (_, i) => i * 2); // 0, 2, 4, ..., 24
     const bucketedData = timeBuckets.map(() => []);
 
     const relevantLogs = medLogs.filter(log => log.medicationName === selectedMedication);
 
+
     relevantLogs.forEach(log => {
-      const medTime = new Date(log.occurredAt.seconds * 1000);
+      const medTime = convertFirestoreTimestamp(log.occurredAt);
+      
       symptoms.forEach(symptom => {
         if (symptom.symptom !== selectedSymptom) return;
 
-        const sympTime = new Date(symptom.occurredAt.seconds * 1000);
-        const diffHours = (sympTime - medTime) / (1000 * 60 * 60);
+        const sympTime = convertFirestoreTimestamp(symptom.occurredAt);
+
+        // console.log("Without multiplication:" + (sympTime - medTime));
+
+        const diffHours = differenceInHours(sympTime, medTime);
+
         if (diffHours >= 0 && diffHours <= 24) {
           const bucketIndex = Math.floor(diffHours / 2);
           bucketedData[bucketIndex].push(symptom.severity);
@@ -90,12 +103,15 @@ const MedicationEffectivenessGraph = () => {
       return parseFloat(avg.toFixed(1));
     });
 
+    console.log("end of processing script")
+    console.log(dataPoints);
+
     setChartData({
       labels,
       datasets: [{ data: dataPoints }]
     });
 
-  }, [selectedSymptom, selectedMedication]);
+  }, [selectedSymptom, selectedMedication, dataLoaded, medLogs, symptoms]);
 
   const chartConfig = {
     backgroundGradientFrom: "#f2f2f2",

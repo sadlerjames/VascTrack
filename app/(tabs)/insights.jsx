@@ -4,6 +4,8 @@ import React, { useEffect, useState, useRef } from 'react';
 
 import { fetchUserEnergyLevels } from '../../lib/fetch';
 
+import {populateTestData, seedManualMedEffectivenessData} from '../../lib/utility/devHelper'
+
 import ScreenWrapper from '../../components/ScreenWrapper';
 import Card from '../../components/Card';
 import CustomButton from '../../components/CustomButton';
@@ -128,6 +130,13 @@ const Insights = () => {
               title="Generate PDF Report" 
               containerStyles="bg-tertiary"
               handlePress={generatePDF} />
+          </View>
+
+          <View className="my-5">
+            <CustomButton 
+              title="Generate Data for Medications and Symptoms" 
+              containerStyles="bg-tertiary"
+              handlePress={seedManualMedEffectivenessData} />
           </View>
           
         </View>
