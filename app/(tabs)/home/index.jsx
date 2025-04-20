@@ -43,16 +43,27 @@ const Home = () => {
       // Filter out the past reminders and get the next upcoming reminder
       const upcomingReminders = reminders.filter(reminder => {
         const reminderTime = new Date(reminder.time);
-        return reminderTime > new Date(); // Only future reminders
+        return reminderTime; 
       });
 
       if (upcomingReminders.length > 0) {
         const nextReminder = upcomingReminders.reduce((prev, current) => {
           return new Date(prev.time) < new Date(current.time) ? prev : current;
         });
-
-        const nextTime = new Date(nextReminder.time);
-        const timeDiff = nextTime - new Date();
+        
+        const now = new Date();
+        const reminderTime = new Date(nextReminder.time);
+        
+        // Create a new date with today's date but reminder's time
+        const nextTime = new Date();
+        nextTime.setHours(reminderTime.getHours(), reminderTime.getMinutes(), 0, 0);
+        
+        // If this time is already past for today, move to tomorrow
+        if (nextTime < now) {
+          nextTime.setDate(nextTime.getDate() + 1);
+        }
+        
+        const timeDiff = nextTime - now;
         
         // Calculate remaining time in hours and minutes
         const hours = Math.floor(timeDiff / (1000 * 60 * 60)); // Convert to hours
