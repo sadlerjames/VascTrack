@@ -183,6 +183,7 @@ const EnergyGraph = () => {
         className="w-full"
         onLayout={(event) => setContainerWidth(event.nativeEvent.layout.width)}
     >
+      <Text className="font-plight text-lg pb-3 text-center">See how your energy levels have changed over the past week or month. This graph shows your daily averages.</Text>
       <CustomDropdown
         value={selectedRange}
         setValue={setSelectedRange}

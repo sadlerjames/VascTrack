@@ -87,7 +87,7 @@ const Insights = () => {
           <Card>
             <Text className="text-2xl font-pbold text-center">Symptom Severity</Text>
             <ViewShot ref={symptomRef} options={{ format: "png", quality: 1 }}>
-              <View className="pt-5">
+              <View className="pt-1">
                 <SymptomGraph />
               </View>
             </ViewShot>
@@ -96,7 +96,7 @@ const Insights = () => {
           <Card>
             <Text className="text-2xl font-pbold text-center">Energy Levels</Text>
             <ViewShot ref={energyRef} options={{ format: "png", quality: 1 }}>
-              <View className="pt-5">
+              <View className="pt-1">
                 <EnergyGraph />
               </View>
             </ViewShot>
@@ -106,7 +106,7 @@ const Insights = () => {
           <Card>
             <Text className="text-2xl font-pbold text-center">Energy Heat Map</Text>
             <ViewShot ref={heatmapRef} options={{ format: "png", quality: 1 }}>
-              <View className="pt-5">
+              <View className="pt-2">
                 {heatmapData ? (
                   <EnergyHeatMap records={heatmapData} />
                 ) : (
@@ -119,7 +119,7 @@ const Insights = () => {
           <Card>
           <Text className="text-2xl font-pbold text-center">Medication Effectiveness Insight</Text>
             <ViewShot ref={medicationEffectiveness} options={{ format: "png", quality: 1 }}>
-              <View className="pt-5">
+              <View className="pt-1">
                 <MedicationEffectivenessGraph />
               </View>
             </ViewShot>

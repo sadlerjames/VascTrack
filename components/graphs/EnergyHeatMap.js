@@ -50,6 +50,7 @@ const EnergyHeatMap = ({ records }) => {
 
   return (
     <View>
+        <Text className="font-plight text-lg pb-3 text-center">See when you usually have the most or least energy. This heat map averages your energy levels by hour and day.</Text>
         {/* Day labels */}
         <View className="flex-row items-center">
             {/* Empty space for hour label column */}

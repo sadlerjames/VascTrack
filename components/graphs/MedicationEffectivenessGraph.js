@@ -127,6 +127,7 @@ const MedicationEffectivenessGraph = () => {
       className="w-full"
       onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
     >
+      <Text className="font-plight text-lg pb-3 text-center">See how your symptoms change after taking a medication. This graph averages symptom severity in 2-hour windows after each dose.</Text>
       {!loading && (
         <>
             <CustomDropdown
