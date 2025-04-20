@@ -149,43 +149,54 @@ const EnergyGraph = () => {
         });
         
       } else if (selectedRange === "30d") {
-        // Logic for monthly view (4 weeks)
-        const monthAgo = new Date(now);
-        monthAgo.setDate(now.getDate() - 28);
-        
-        const filtered = sortedEnergyLevels.filter((entry) => {
-          const date = convertFirestoreTimestamp(entry.recordedAt);
-          return date >= monthAgo && date <= now;
-        });
-  
-        // Group by week
-        const weeks = [[], [], [], []];
-        const weekStart = new Date(monthAgo);
-        for (let i = 0; i < 4; i++) {
-          const weekEnd = new Date(weekStart);
-          weekEnd.setDate(weekEnd.getDate() + 7);
-  
-          weeks[i] = filtered.filter((entry) => {
-            const date = convertFirestoreTimestamp(entry.recordedAt);
-            return date >= weekStart && date < weekEnd;
+        const days = [];
+        const today = new Date(now);
+        today.setHours(0, 0, 0, 0);
+        const monthAgo = new Date(today);
+        monthAgo.setDate(monthAgo.getDate() - 29);
+      
+        for (let i = 0; i < 30; i++) {
+          const day = new Date(monthAgo);
+          day.setDate(monthAgo.getDate() + i);
+          days.push({
+            date: day,
+            dateString: getDateString(day),
           });
-  
-          weekStart.setDate(weekStart.getDate() + 7);
         }
-  
-        const labels = weeks.map((week, i) => {
-          const start = new Date(monthAgo);
-          start.setDate(start.getDate() + i * 7);
-          return `${start.toLocaleString('default', { month: 'short' })} ${start.getDate()}`;
+      
+        // Filter energy entries from last 30 days
+        const filtered = sortedEnergyLevels.filter(entry => {
+          const date = convertFirestoreTimestamp(entry.recordedAt);
+          return date >= monthAgo && date <= today;
         });
-  
-        const dataPoints = weeks.map((week) => {
-          if (week.length === 0) return -1; // Change to null if no data
-          const total = week.reduce((sum, e) => sum + e.energyLevel, 0);
-          return Math.round(total / week.length);
+      
+        // Group entries by day
+        const entriesByDay = {};
+        filtered.forEach(entry => {
+          const date = convertFirestoreTimestamp(entry.recordedAt);
+          const dateString = getDateString(date);
+          if (!entriesByDay[dateString]) {
+            entriesByDay[dateString] = [];
+          }
+          entriesByDay[dateString].push(entry);
         });
-  
+      
+        const dataPoints = days.map(day => {
+          const entries = entriesByDay[day.dateString];
+          if (!entries || entries.length === 0) return -1;
+          const total = entries.reduce((sum, e) => sum + e.energyLevel, 0);
+          return Math.round((total / entries.length) * 10) / 10;
+        });
+      
+        const labels = days.map(day => {
+          // Label only the start of each week, Monday defined as start of week
+          return day.date.getDay() === 1
+            ? `${day.date.getDate()} ${day.date.toLocaleString('default', { month: 'short' })}`
+            : '';
+        });
+      
         const { min, max } = getMinMax(dataPoints);
+      
         setChartData({
           labels,
           datasets: [{ data: dataPoints }],
@@ -193,6 +204,7 @@ const EnergyGraph = () => {
           max,
         });
       }
+      
     } catch (error) {
       console.error("Error processing chart data:", error);
       setChartData(null);
