@@ -30,17 +30,20 @@ const EnergyGraph = () => {
     loadEnergyLevels();
   }, [user]);
 
-  // Used to calcualte y axis scale
+  // Used to calculate y axis scale
   const getMinMax = (dataPoints) => {
-    if (!dataPoints || dataPoints.length === 0) return { min: 0, max: 5 };
+    // Filter out null values for min/max calculation
+    const validPoints = dataPoints.filter(point => point !== null);
+    
+    if (!validPoints || validPoints.length === 0) return { min: 0, max: 5 };
   
-    const min = Math.min(...dataPoints);
-    const max = Math.max(...dataPoints);
+    const min = Math.min(...validPoints);
+    const max = Math.max(...validPoints);
   
     // Optionally pad the range a little
     const padding = 0.5;
-    const adjustedMin = Math.floor(min - padding);
-    const adjustedMax = Math.ceil(max + padding);
+    const adjustedMin = Math.max(0, Math.floor(min - padding)); // Ensure min is not negative
+    const adjustedMax = Math.min(5, Math.ceil(max + padding)); // Cap at 5 if needed
   
     return {
       min: adjustedMin,
@@ -48,7 +51,6 @@ const EnergyGraph = () => {
     };
   };
   
-
   const convertFirestoreTimestamp = (timestamp) => {
     try {
       if (typeof timestamp === 'string') {
@@ -69,54 +71,87 @@ const EnergyGraph = () => {
     const daysOfWeek = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
     return daysOfWeek[date.getDay()];
   };
+  
+  // Get date string in YYYY-MM-DD format for grouping
+  const getDateString = (date) => {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  };
 
   useEffect(() => {
     if (energyLevels.length === 0) return;
   
-    const getMinMax = (dataPoints) => {
-      if (!dataPoints || dataPoints.length === 0) return { min: 0, max: 5 };
-      const min = Math.min(...dataPoints);
-      const max = Math.max(...dataPoints);
-      const padding = 0.5;
-      return {
-        min: Math.floor(min - padding),
-        max: Math.ceil(max + padding),
-      };
-    };
-  
     try {
+      // Sort energy levels by date
       const sortedEnergyLevels = energyLevels.sort((a, b) => {
         return convertFirestoreTimestamp(a.recordedAt) - convertFirestoreTimestamp(b.recordedAt);
       });
   
       const now = new Date();
-      let filtered = [];
-  
+      
       if (selectedRange === "7d") {
+        // Get start date (6 days ago)
         const sevenDaysAgo = new Date(now);
         sevenDaysAgo.setDate(now.getDate() - 6);
-        filtered = sortedEnergyLevels.filter((entry) => {
+        
+        // Create array of all 7 days
+        const allDays = [];
+        for (let i = 0; i < 7; i++) {
+          const day = new Date(sevenDaysAgo);
+          day.setDate(sevenDaysAgo.getDate() + i);
+          allDays.push({
+            date: day,
+            dateString: getDateString(day),
+            label: formatDateLabel(day)
+          });
+        }
+        
+        // Filter entries within the 7-day range
+        const filteredEntries = sortedEnergyLevels.filter((entry) => {
           const date = convertFirestoreTimestamp(entry.recordedAt);
           return date >= sevenDaysAgo && date <= now;
         });
-  
-        const labels = filtered.map((e) =>
-          formatDateLabel(convertFirestoreTimestamp(e.recordedAt))
-        );
-        const dataPoints = filtered.map((e) => e.energyLevel);
-  
+        
+        // Group by day
+        const entriesByDay = {};
+        filteredEntries.forEach(entry => {
+          const date = convertFirestoreTimestamp(entry.recordedAt);
+          const dateString = getDateString(date);
+          
+          if (!entriesByDay[dateString]) {
+            entriesByDay[dateString] = [];
+          }
+          entriesByDay[dateString].push(entry);
+        });
+        
+        // Create data points with averages or null for days with no data
+        const labels = allDays.map(day => day.label);
+        const dataPoints = allDays.map(day => {
+          const entries = entriesByDay[day.dateString];
+          if (!entries || entries.length === 0) {
+            return null; // No data for this day
+          }
+          
+          // Calculate average
+          const sum = entries.reduce((total, entry) => total + entry.energyLevel, 0);
+          return Math.round((sum / entries.length) * 10) / 10; // Round to 1 decimal place
+        });
+        
+        // Calculate min/max for y-axis scale
         const { min, max } = getMinMax(dataPoints);
+        
         setChartData({
           labels,
           datasets: [{ data: dataPoints }],
           min,
           max,
         });
-  
+        
       } else if (selectedRange === "30d") {
+        // Logic for monthly view (4 weeks)
         const monthAgo = new Date(now);
         monthAgo.setDate(now.getDate() - 28);
-        filtered = sortedEnergyLevels.filter((entry) => {
+        
+        const filtered = sortedEnergyLevels.filter((entry) => {
           const date = convertFirestoreTimestamp(entry.recordedAt);
           return date >= monthAgo && date <= now;
         });
@@ -143,7 +178,7 @@ const EnergyGraph = () => {
         });
   
         const dataPoints = weeks.map((week) => {
-          if (week.length === 0) return 0;
+          if (week.length === 0) return null; // Change to null if no data
           const total = week.reduce((sum, e) => sum + e.energyLevel, 0);
           return Math.round(total / week.length);
         });
@@ -162,8 +197,6 @@ const EnergyGraph = () => {
     }
   }, [energyLevels, selectedRange]);
   
-  
-
   const chartConfig = {
     backgroundGradientFrom: "#f2f2f2",
     backgroundGradientTo: "#f2f2f2",
@@ -209,12 +242,20 @@ const EnergyGraph = () => {
           height={220}
           yAxisLabel=""
           yAxisSuffix=""
-          yAxisInterval={1}
+          // yAxisInterval={1}
           chartConfig={chartConfig}
           bezier
-          fromZero={false}
-          segments={chartData.max - chartData.min || 2} // safe fallback
-          formatYLabel={(y) => Number(y).toFixed(0)}
+          // fromZero
+          withDots={true}
+          withShadow={false}
+          withInnerLines={true}
+          withOuterLines={true}
+          withVerticalLines={true}
+          withHorizontalLines={true}
+          yAxisMin={0}
+          yAxisMax={5}
+          
+          formatYLabel={(y) => Math.round(y)}
           style={{ marginVertical: 8, borderRadius: 10 }}
         />
       ) : (
