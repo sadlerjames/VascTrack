@@ -1,6 +1,8 @@
 import { View, Text, ActivityIndicator, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { LineChart } from 'react-native-chart-kit'
+import EnergyLineChart from './LineChart';
+
 
 import CustomDropdown from '../CustomDropdown'
 import { fetchUserEnergyLevels } from '../../lib/fetch'
@@ -233,31 +235,14 @@ const EnergyGraph = () => {
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : chartData && chartData.labels.length > 0 ? (
-        <LineChart
-          data={{
-            labels: chartData.labels,
-            datasets: chartData.datasets,
-          }}
-          width={containerWidth > 0 ? containerWidth : 300}
-          height={220}
-          yAxisLabel=""
-          yAxisSuffix=""
-          // yAxisInterval={1}
-          chartConfig={chartConfig}
-          bezier
-          // fromZero
-          withDots={true}
-          withShadow={false}
-          withInnerLines={true}
-          withOuterLines={true}
-          withVerticalLines={true}
-          withHorizontalLines={true}
-          yAxisMin={0}
-          yAxisMax={5}
-          
-          formatYLabel={(y) => Math.round(y)}
-          style={{ marginVertical: 8, borderRadius: 10 }}
-        />
+        <View className="pt-3">
+          <EnergyLineChart
+            labels={chartData.labels}
+            data={chartData.datasets[0].data.map(d => (d === -1 ? null : d))}
+            width={containerWidth > 0 ? containerWidth : 300}
+          />
+        </View>
+
       ) : (
         <Text className="mt-4 text-gray-500">No data available</Text>
       )}
