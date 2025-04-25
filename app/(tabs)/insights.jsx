@@ -135,7 +135,7 @@ const Insights = () => {
               handlePress={generatePDF} />
             </Card>
           
-
+          {/* Function to populate databse for testing purposes */}
           {/* <View className="my-5">
             <CustomButton 
               title="Generate Data for Medications and Symptoms" 
