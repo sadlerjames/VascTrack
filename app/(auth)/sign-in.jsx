@@ -61,16 +61,17 @@ const googleSignIn = async () => {
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
         <View className="w-full justify-center h-full px-4 my-3">
-          <View className="items-center">
+          {/* <View className="items-center">
             <Image 
               source={images.logo}
               resizeMode='contain'
               className="w-[215px] h-[170px]"
             />
-          </View>
+          </View> */}
           
-
-          <Text className="text-2xl text-black font-psemibold mt-3">Sign In</Text>
+          <View className="items-center">
+            <Text className="text-2xl text-black font-psemibold mt-3">Sign In</Text>
+          </View>
 
           <FormField
             title="Email"

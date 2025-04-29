@@ -82,19 +82,20 @@ const googleSignIn = async () => {
 
           <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View className="w-full justify-center h-full px-4 my-3">
-              <View className="items-center">
+              {/* <View className="items-center">
                 <Image 
                   source={images.logo}
                   resizeMode='contain'
                   className="w-[215px] h-[170px]"
                 />
-              </View>
+              </View> */}
               
-
-              <Text className="text-2xl text-black font-psemibold mt-3">Sign Up</Text>
+              <View className="items-center">
+                <Text className="text-2xl text-black font-psemibold mt-3">Sign Up</Text>
+              </View>
 
               <FormField
-                title="First Name"
+                title="First name"
                 value={form.firstName}
                 handleChangeText={(n) => setForm({ ...form, firstName: n})}
                 otherStyles="mt-7"
@@ -102,7 +103,7 @@ const googleSignIn = async () => {
               />
 
               <FormField
-                title="Last Name"
+                title="Last name"
                 value={form.lastName}
                 handleChangeText={(n) => setForm({ ...form, lastName: n})}
                 otherStyles="mt-7"
@@ -125,7 +126,7 @@ const googleSignIn = async () => {
               />
 
               <FormField
-                title="Confirm Password"
+                title="Confirm password"
                 value={form.confirmPassword}
                 handleChangeText={(cp) => setForm({ ...form, confirmPassword: cp})}
                 otherStyles="mt-7"
@@ -143,10 +144,6 @@ const googleSignIn = async () => {
                 <Link href="/sign-in" className="font-pbold text-lg text-quaternary">Sign In</Link>
               </View>
 
-              <GoogleSignIn
-                handlePress={googleSignIn}
-                containerStyles="mt-3"
-              />
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
