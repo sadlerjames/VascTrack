@@ -298,21 +298,21 @@ export default function ReminderScreen() {
     <ScreenWrapper>
       <View className="flex-1 items-center justify-center">
         <Card>
-          <Text className='text-lg font-psemibold mb-3 text-gray-800'>Create New Reminder</Text>
+          <Text className='text-2xl font-pbold text-center'>Create New Reminder</Text>
                   
-          <Text className='text-gray-600 font-pregular mb-1'>Select Medication</Text>
+          <Text className='font-pbold text-lg'>Select Medication:</Text>
           <CustomDropdown
             value={selectedMedication}
             setValue={setSelectedMedication}
             isFocus={isFocus}
             setIsFocus={setIsFocus}
             data={medicationList}
-            placeholder="Medication"
+            placeholder="Select"
             searchPlaceholder="Search..."
           />
 
           <View className="mt-2">
-            <Text className='text-gray-600 mb-1'>Time</Text>
+            <Text className='font-pbold text-lg'>Time:</Text>
             <DateTimePicker
                 value={time}
                 mode="time"
@@ -345,7 +345,7 @@ export default function ReminderScreen() {
         </Card>
         <Card>
           {/* Reminders List */}
-          <Text className='text-xl font-pbold mb-3 text-gray-800'>Your Reminders</Text>
+          <Text className='text-2xl font-pbold text-center mb-1'>Your Reminders</Text>
           {reminders.length === 0 ? (
           <Text className='text-gray-500 italic'>No reminders set</Text>
           ) : (
