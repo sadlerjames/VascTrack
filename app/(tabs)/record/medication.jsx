@@ -118,7 +118,7 @@ const Medication = () => {
 
                 <View className="mt-3">
                   {/* Predefined doages */}
-                  <Text className="font-pbold text-lg">Enter dosage:</Text>
+                  <Text className="font-pbold text-lg">Enter dosage (in mg):</Text>
                   <View className="flex-row justify-between mt-2">
                     <CustomButton
                       title="1mg"
@@ -151,7 +151,7 @@ const Medication = () => {
                     <FormField
                         title=""
                         value={dosage}
-                        placeholder="E.g. 1mg"
+                        placeholder="E.g. 1"
                         handleChangeText={setDosage}
                         otherStyles=""
                         keyboardType="numeric"
