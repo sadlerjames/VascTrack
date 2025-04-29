@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, Pressable } from "react-native";
 
-const ProgressBar = ({ selected, setSelected, containerStyle }) => {
+const ProgressBar = ({ selected, setSelected, containerStyle, minLabel = "No\nImpact", maxLabel = "Severe\nImpact" }) => {
   const options = [1, 2, 3, 4, 5, 6];
-
+  
   return (
     <>
       <View className={`items-center ${containerStyle}`}>
@@ -17,29 +17,27 @@ const ProgressBar = ({ selected, setSelected, containerStyle }) => {
         
         {/* Buttons and Labels */}
         <View className="w-11/12 flex-row justify-between pt-3">
-        {options.map((option) => (
-          <View key={option} className="items-center">
-            {/* Button */}
-            <Pressable
-              onPress={() => setSelected(option)}
-              className={`w-9 h-9 rounded-full flex items-center justify-center ${
-                selected === option ? "bg-quaternary" : "bg-gray-300"
-              }`}
-            >
-              <Text className="text-white font-semibold">{option - 1}</Text>
-            </Pressable>
-          </View>
-        ))}
+          {options.map((option) => (
+            <View key={option} className="items-center">
+              {/* Button */}
+              <Pressable
+                onPress={() => setSelected(option)}
+                className={`w-9 h-9 rounded-full flex items-center justify-center ${
+                  selected === option ? "bg-quaternary" : "bg-gray-300"
+                }`}
+              >
+                <Text className="text-white font-semibold">{option - 1}</Text>
+              </Pressable>
+            </View>
+          ))}
         </View>
-
+        
         <View className="w-full flex-row justify-between pt-2">
-          <Text className=" text-gray-600 font-plight text-center">No{"\n"}Impact</Text>
-          <Text className=" text-gray-600 font-plight text-center">Severe{"\n"}Impact</Text>
-
+          <Text className="text-gray-600 font-plight text-center">{minLabel}</Text>
+          <Text className="text-gray-600 font-plight text-center">{maxLabel}</Text>
         </View>
       </View>
     </>
-    
   );
 };
 

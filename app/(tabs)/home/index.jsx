@@ -89,7 +89,7 @@ const Home = () => {
       <View className="flex-1 items-center">
         <Card>
           <Text className="text-2xl font-pbold text-center">How much energy do you have?</Text>
-          <ProgressBar selected={barSelected} setSelected={setBarSelected} containerStyle="pt-5 pb-3" />
+          <ProgressBar selected={barSelected} setSelected={setBarSelected} containerStyle="pt-5 pb-3" minLabel="None" maxLabel="Lots" />
 
           <View className="items-center">
             <CustomButton
