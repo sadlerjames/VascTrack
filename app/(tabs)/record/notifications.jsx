@@ -201,7 +201,7 @@ export default function ReminderScreen() {
       // console.log(`Scheduled notification "${title}" for ${isDaily ? 'daily at' : ''} ${scheduledTime}`);
       return true;
     } catch (error) {
-      console.error("Error scheduling notification:", error);
+      // console.error("Error scheduling notification:", error);
       Alert.alert("Error", "Failed to schedule notification. Try again later.");
       return false;
     }

@@ -1,5 +1,6 @@
-import { View, Text, Dimensions, Image } from "react-native";
+import { View, Text, Dimensions, Image, Pressable } from "react-native";
 import Svg, { Path } from "react-native-svg";
+import { router } from 'expo-router';
 
 import { useGlobalContext } from "../context/GlobalProvider";
 import images from "../constants/images";
@@ -7,25 +8,35 @@ import images from "../constants/images";
 const { width, height } = Dimensions.get("window");
 const dynamicMarginTop = -height * 0.04;
 
+const handleRedirect = () => {
+  router.push('/home');
+};
+
+
+
 const WaveHeader = () => {
   const { user } = useGlobalContext();
   return (
     <View>
       {/* Header Content */}
-      <View className="justify-between items-start flex-row" style={{ backgroundColor: "#ADE2FF", padding: 20 }}>
-        <View>
-          <Text className="font-pmedium text-m">Welcome back</Text>
-          <Text className="font-psemibold text-3xl">{user?.firstName || "User"}</Text>
-        </View>
+      <Pressable onPress={handleRedirect}>
+        <View className="justify-between items-start flex-row" style={{ backgroundColor: "#ADE2FF", padding: 20 }}>
+          
+            <View>
+              <Text className="font-pmedium text-m">Welcome back</Text>
+              <Text className="font-psemibold text-3xl">{user?.firstName || "User"}</Text>
+            </View>
 
-        <View className="mt-2 mr-8">
-          <Image 
-            source={images.logo}
-            className="w-16 h-12"
-            resizeMode="contain"
-          />
+            <View className="mt-2 mr-8">
+              <Image 
+                source={images.logo}
+                className="w-16 h-12"
+                resizeMode="contain"
+              />
+            </View>
+          
         </View>
-      </View>
+      </Pressable>
 
       {/* Wavy SVG */}
       <Svg height="100" width="100%" viewBox="0 0 393 52" style={{ marginTop: dynamicMarginTop }}>
