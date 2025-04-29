@@ -148,24 +148,24 @@ const Profile = () => {
           >
             <Card>
               <View className="w-full justify-center px-4 my-3">
-                <Text className="text-2xl text-center text-black font-psemibold">Edit Profile</Text>
+                <Text className="text-2xl font-pbold text-center">Edit Profile</Text>
 
                 <FormField
-                  title="First Name"
+                  title="First name:"
                   value={form.firstName}
                   handleChangeText={(n) => setForm({ ...form, firstName: n })}
                   otherStyles="mt-7"
                 />
 
                 <FormField
-                  title="Last Name"
+                  title="Last name:"
                   value={form.lastName}
                   handleChangeText={(n) => setForm({ ...form, lastName: n })}
                   otherStyles="mt-7"
                 />
 
                 <FormField
-                  title="Email"
+                  title="Email:"
                   value={form.email}
                   handleChangeText={(e) => setForm({ ...form, email: e })}
                   otherStyles="mt-7"
@@ -173,7 +173,7 @@ const Profile = () => {
                 />
 
                 {/* DOB Picker */}
-                <Text className="text-base text-black font-pmedium mt-7">Date of Birth</Text>
+                <Text className="text-base text-black font-pmedium mt-7">Date of Birth (optional):</Text>
                 <TouchableOpacity 
                     onPress={() => setShowDatePicker(true)}
                     activeOpacity={0.7}
@@ -224,7 +224,7 @@ const Profile = () => {
 
                 {/* Sex Picker */}
                 <View className="mt-7">
-                  <Text className="text-base text-black font-pmedium">Sex</Text>
+                  <Text className="text-base text-black font-pmedium">Sex (optional):</Text>
                   <TouchableOpacity
                     onPress={() => setShowSexPicker(true)}
                     activeOpacity={0.7}
@@ -279,7 +279,7 @@ const Profile = () => {
                 )}
 
                 <FormField
-                  title="New Password"
+                  title="New password (optional):"
                   value={form.password}
                   handleChangeText={(p) => setForm({ ...form, password: p })}
                   otherStyles="mt-7"
@@ -287,7 +287,7 @@ const Profile = () => {
                 />
 
                 <FormField
-                  title="Confirm New Password"
+                  title="Confirm new password (optional):"
                   value={form.confirmPassword}
                   handleChangeText={(cp) => setForm({ ...form, confirmPassword: cp })}
                   otherStyles="mt-7"
