@@ -1,10 +1,10 @@
 export const predefinedMedications = [
-  { label: "Prednisolone", value: "Prednisolone" },
-  { label: "Cyclophosphamide", value: "Cyclophosphamide" },
-  { label: "Rituximab", value: "Rituximab" },
   { label: "Azathioprine", value: "Azathioprine" },
+  { label: "Colchicine", value: "Colchicine" },
+  { label: "Cyclophosphamide", value: "Cyclophosphamide" },
+  { label: "Dapsone", value: "Dapsone" },
   { label: "Methotrexate", value: "Methotrexate" },
   { label: "Mycophenolate Mofetil", value: "Mycophenolate Mofetil" },
-  { label: "Dapsone", value: "Dapsone" },
-  { label: "Colchicine", value: "Colchicine" }
+  { label: "Prednisolone", value: "Prednisolone" },
+  { label: "Rituximab", value: "Rituximab" }
 ];
