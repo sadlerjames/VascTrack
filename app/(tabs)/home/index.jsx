@@ -13,7 +13,7 @@ import icons from '../../../constants/icons';
 
 const Home = () => {
   const { user } = useGlobalContext();
-  const [barSelected, setBarSelected] = useState(0);
+  const [barSelected, setBarSelected] = useState(5);
   const [nextMedicationTime, setNextMedicationTime] = useState(null);
 
   // Submit to DB to store
