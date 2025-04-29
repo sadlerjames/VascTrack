@@ -46,7 +46,6 @@ const SymptomGraph = () => {
   const convertFirestoreTimestamp = (timestamp) => {
     try {
       if (typeof timestamp === 'string') {
-        // Handle ISO string format (2025-03-07T19:56:00.000Z)
         const date = new Date(timestamp);
         
         // Check if the date is valid
@@ -61,7 +60,7 @@ const SymptomGraph = () => {
       throw new Error(`Unknown timestamp format: ${JSON.stringify(timestamp)}`);
     } catch (error) {
       console.error("Error parsing date:", error);
-      // Return a fallback date instead of an invalid date
+      // Return fallback date instead of an invalid date
       return new Date(); // Current date as fallback
     }
   };
@@ -77,7 +76,7 @@ const SymptomGraph = () => {
     }
   };
 
-  // Fromat data as 'MMM D'
+  // Fromat data as MMM D
   const formatDateAsWeekStart = (date) => {
     return `${date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`;
   };

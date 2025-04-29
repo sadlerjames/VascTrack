@@ -11,7 +11,7 @@ export const useGlobalContext = () => useContext(GlobalContext);
 const GlobalProvider = ({ children }) => {
     const [isLoggedIn, setisLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
-    const [isLoading, setisLoading] = useState(true); // loading the user in
+    const [isLoading, setisLoading] = useState(true);
 
     useEffect(() => {
         getCurrentUser().then(user => {

@@ -33,7 +33,7 @@ const Home = () => {
     }
   };
 
-  // Function to calculate time remaining until next medication
+  // Calculate time remaining until next medication
   const calculateNextMedicationTime = async () => {
     try {
       // Load saved reminders from AsyncStorage

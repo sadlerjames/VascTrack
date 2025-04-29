@@ -11,7 +11,6 @@ import CustomButton from '../../../components/CustomButton'
 
 
 const Energy = () => {
-  // Get user
   const { user } = useGlobalContext();
 
   const [barSelected, setBarSelected] = useState(0);
@@ -25,7 +24,6 @@ const Energy = () => {
             return;
         }
 
-        // Call Firestore function to save data
         await recordEnergy(user.uid, barSelected-1);
 
         Alert.alert("Success", "Energy recorded successfully!"); 

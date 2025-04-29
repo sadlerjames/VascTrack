@@ -32,7 +32,7 @@ const EnergyGraph = () => {
     loadEnergyLevels();
   }, [user]);
 
-  // Used to calculate y axis scale
+  // Calculate y axis scale
   const getMinMax = (dataPoints) => {
     // Filter out null values for min/max calculation
     const validPoints = dataPoints.filter(point => point !== null);
@@ -42,10 +42,10 @@ const EnergyGraph = () => {
     const min = Math.min(...validPoints);
     const max = Math.max(...validPoints);
   
-    // Optionally pad the range a little
+    // Pad the range slightly
     const padding = 0.5;
     const adjustedMin = Math.max(0, Math.floor(min - padding)); // Ensure min is not negative
-    const adjustedMax = Math.min(5, Math.ceil(max + padding)); // Cap at 5 if needed
+    const adjustedMax = Math.min(5, Math.ceil(max + padding)); // Cap at 5
   
     return {
       min: adjustedMin,
@@ -91,7 +91,7 @@ const EnergyGraph = () => {
       const now = new Date();
       
       if (selectedRange === "7d") {
-        // Get start date (6 days ago)
+        // Get start date - 6 days ago
         const sevenDaysAgo = new Date(now);
         sevenDaysAgo.setDate(now.getDate() - 6);
         
@@ -125,7 +125,7 @@ const EnergyGraph = () => {
           entriesByDay[dateString].push(entry);
         });
         
-        // Create data points with averages or null for days with no data
+        // Create data points with averages or -1 for days with no data
         const labels = allDays.map(day => day.label);
         const dataPoints = allDays.map(day => {
           const entries = entriesByDay[day.dateString];
@@ -189,7 +189,7 @@ const EnergyGraph = () => {
         });
       
         const labels = days.map(day => {
-          // Label only the start of each week, Monday defined as start of week
+          // Label only start of each week, Monday defined as start
           return day.date.getDay() === 1
             ? `${day.date.getDate()} ${day.date.toLocaleString('default', { month: 'short' })}`
             : '';

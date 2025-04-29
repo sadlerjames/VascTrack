@@ -183,7 +183,7 @@ const EnergyHeatMap = ({ records }) => {
   );
 };
 
-// Convert 24h format to 12h (e.g., 6 → 6AM, 15 → 3PM)
+// Convert 24h format to 12h, e.g. 6 to 6AM
 const formatHour = (hour) => {
   const period = hour >= 12 ? 'PM' : 'AM';
   const formatted = hour % 12 === 0 ? 12 : hour % 12;

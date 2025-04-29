@@ -18,13 +18,13 @@ import { predefinedSymptoms } from '../../../constants/symptomData'
 const Symptoms = () => {    
   // Get user
   const { user } = useGlobalContext();
+
   // Dropdown
   const [dropdownValue, setDropdownValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [customSymptoms, setCustomSymptoms] = useState([]);
   const [newSymptom, setNewSymptom] = useState('');
   const [note, setNote] = useState('');
-
 
   // Progress Bar
   const [barSelected, setBarSelected] = useState(0);
@@ -76,7 +76,6 @@ const Symptoms = () => {
             }
             finalSymptom = newSymptom.trim();
 
-            // Save new symptom to Firestore
             await saveCustomSymptom(user.uid, finalSymptom);
             setCustomSymptoms(prev => [...prev, finalSymptom]);
         }

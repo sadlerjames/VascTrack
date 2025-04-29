@@ -75,7 +75,7 @@ export default function ReminderScreen() {
     };
   }, [reminders]);
 
-  // Get the users medication to put in dropdown
+  // Get users medication to put in dropdown
   useEffect(() => {
     const fetchMedications = async () => {
       if (!user) return;
@@ -214,7 +214,6 @@ export default function ReminderScreen() {
       return;
     }
 
-    // The body text of the reminder
     var bodyText = "Take your medication now!"
 
     // Create a new reminder object

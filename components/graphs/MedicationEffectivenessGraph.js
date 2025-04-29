@@ -68,7 +68,7 @@ const MedicationEffectivenessGraph = () => {
   useEffect(() => {
     if (!dataLoaded || !selectedSymptom || !selectedMedication) return;
 
-    const timeBuckets = Array.from({ length: 13 }, (_, i) => i * 2); // 0, 2, 4, ..., 24
+    const timeBuckets = Array.from({ length: 13 }, (_, i) => i * 2); // 0, 2, 4, ...
     const bucketedData = timeBuckets.map(() => []);
 
     const relevantLogs = medLogs.filter(log => log.medicationName === selectedMedication);

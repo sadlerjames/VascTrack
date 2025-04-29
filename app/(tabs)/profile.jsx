@@ -61,7 +61,7 @@ const Profile = () => {
     loadUserData();
   }, [user]);
 
-  // Format the date at day/month/year
+  // Format the date as day/month/year
   const formatDate = (date) => {
     if (!date) return "";
     const day = String(date.getDate()).padStart(2, '0');
