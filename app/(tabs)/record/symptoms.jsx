@@ -153,7 +153,11 @@ const Symptoms = () => {
             </View>
 
             <View className="pt-4">
-              <Text className="font-pbold text-lg">Add a Note (optional):</Text>
+              <View className="flex-row">
+                <Text className="font-pbold text-lg">Add a Note </Text>
+                <Text className="text-lg">(optional)</Text>
+                <Text className="font-pbold text-lg">:</Text>
+              </View>
               <View className={`border-2  w-full min-h-16 px-4 bg-gray-300 rounded-2xl items-center flex-row border-gray-400`}>
                 <TextInput 
                     className="flex-1 text-black font-psemibold text-base"
