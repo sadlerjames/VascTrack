@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import Svg, { Line, Circle, Text, G, Path, Rect } from 'react-native-svg';
 
-const EnergyLineChart = ({ labels, data, width, height = 220 }) => {
+const LineChart = ({ labels, data, width, height = 220, xAxisLabel = "Days", yAxisLabel = "Energy Level", lineColor = "#f59e0b" }) => {
   const leftPadding = 45;
   const rightPadding = 30;
   const topPadding = 30;
@@ -110,7 +110,7 @@ const EnergyLineChart = ({ labels, data, width, height = 220 }) => {
           textAnchor="middle"
           fontWeight="bold"
         >
-          Days
+          {xAxisLabel}
         </Text>
 
         {/* Y-axis label */}
@@ -123,13 +123,13 @@ const EnergyLineChart = ({ labels, data, width, height = 220 }) => {
           fontWeight="bold"
           transform={`rotate(-90, 12, ${topPadding + chartHeight / 2})`}
         >
-          Energy Level
+          {yAxisLabel}
         </Text>
 
         {/* Line path */}
         <Path
           d={linePath}
-          stroke="#f59e0b"
+          stroke={lineColor}
           strokeWidth="2"
           fill="none"
         />
@@ -142,7 +142,7 @@ const EnergyLineChart = ({ labels, data, width, height = 220 }) => {
               cx={point.x}
               cy={point.y}
               r="4"
-              fill="#f59e0b"
+              fill={lineColor}
               stroke="#131339"
               strokeWidth="1.5"
             />
@@ -153,4 +153,4 @@ const EnergyLineChart = ({ labels, data, width, height = 220 }) => {
   );
 };
 
-export default EnergyLineChart;
+export default LineChart;

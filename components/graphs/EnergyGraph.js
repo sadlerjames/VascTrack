@@ -1,7 +1,6 @@
 import { View, Text, ActivityIndicator, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { LineChart } from 'react-native-chart-kit'
-import EnergyLineChart from './LineChart';
+import LineChart from './LineChart';
 
 
 import CustomDropdown from '../CustomDropdown'
@@ -248,7 +247,7 @@ const EnergyGraph = () => {
         <ActivityIndicator size="large" color="#0000ff" />
       ) : chartData && chartData.labels.length > 0 ? (
         <View className="pt-3">
-          <EnergyLineChart
+          <LineChart
             labels={chartData.labels}
             data={chartData.datasets[0].data.map(d => (d === -1 ? null : d))}
             width={containerWidth > 0 ? containerWidth : 300}
