@@ -85,7 +85,7 @@ const EnergyHeatMap = ({ records }) => {
                     className="w-9 h-7 mb-0.5 mx-0.5 rounded justify-center items-center"
                     style={{ backgroundColor: bgColor }}
                 >
-                    {Math.round(level) !== 0 && <Text>{Math.round(level)}</Text>}
+                    {level !== null && <Text>{Math.round(level)}</Text>}
                 </View>
                 );
             })}
