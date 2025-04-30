@@ -50,8 +50,12 @@
   "private": true,
   "devDependencies": {
     "@babel/cli": "^7.26.4",
+    "@babel/preset-env": "^7.27.1",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^13.2.0",
+    "babel-jest": "^29.7.0",
     "jest-expo": "^52.0.6",
     "metro-react-native-babel-preset": "^0.77.0",
     "react-test-renderer": "^18.3.1"
