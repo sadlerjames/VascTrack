@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, Dimensions } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
+import { View, Text, ActivityIndicator } from 'react-native';
 
+import LineChart from './LineChart';
 import CustomDropdown from '../CustomDropdown';
 import { useGlobalContext } from '../../context/GlobalProvider';
 import { fetchUserSymptoms, fetchCustomSymptoms, getUserMedications, fetchUserMedicationLogs } from '../../lib/fetch';
-import { predefinedSymptoms } from '../../constants/symptomData'
-import { predefinedMedications } from '../../constants/medicationData'
+import { predefinedSymptoms } from '../../constants/symptomData';
+import { predefinedMedications } from '../../constants/medicationData';
 import { convertFirestoreTimestamp } from '../../lib/utility/convertFirestoreTimestamp';
 import { differenceInHours } from '../../lib/utility/diffHours';
-
 
 const MedicationEffectivenessGraph = () => {
   const { user } = useGlobalContext();
@@ -38,7 +37,7 @@ const MedicationEffectivenessGraph = () => {
       const customSymptoms = await fetchCustomSymptoms(user.uid);
       const userMeds = await getUserMedications(user.uid);
       setCustomSymptoms(customSymptoms);
-      setUserMedication(userMeds)
+      setUserMedication(userMeds);
 
       // Get users symptom data and medication logs
       const symptomData = await fetchUserSymptoms();
@@ -73,7 +72,6 @@ const MedicationEffectivenessGraph = () => {
 
     const relevantLogs = medLogs.filter(log => log.medicationName === selectedMedication);
 
-
     relevantLogs.forEach(log => {
       const medTime = convertFirestoreTimestamp(log.occurredAt);
       
@@ -81,9 +79,6 @@ const MedicationEffectivenessGraph = () => {
         if (symptom.symptom !== selectedSymptom) return;
 
         const sympTime = convertFirestoreTimestamp(symptom.occurredAt);
-
-        // console.log("Without multiplication:" + (sympTime - medTime));
-
         const diffHours = differenceInHours(sympTime, medTime);
 
         if (diffHours >= 0 && diffHours <= 24) {
@@ -95,26 +90,17 @@ const MedicationEffectivenessGraph = () => {
 
     const labels = timeBuckets.map(h => `${h}`);
     const dataPoints = bucketedData.map(bucket => {
-      if (bucket.length === 0) return null;
+      if (bucket.length === 0) return -1;
       const avg = bucket.reduce((a, b) => a + b, 0) / bucket.length;
       return parseFloat(avg.toFixed(1));
     });
 
     setChartData({
       labels,
-      datasets: [{ data: dataPoints }]
+      data: dataPoints
     });
 
   }, [selectedSymptom, selectedMedication, dataLoaded, medLogs, symptoms]);
-
-  const chartConfig = {
-    backgroundGradientFrom: "#f2f2f2",
-    backgroundGradientTo: "#f2f2f2",
-    decimalPlaces: 1,
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    propsForDots: { r: "5", strokeWidth: "2", stroke: "#3b82f6" },
-  };
 
   return (
     <View
@@ -124,49 +110,43 @@ const MedicationEffectivenessGraph = () => {
       <Text className="font-plight text-lg pb-3 text-center">See how your symptoms change after taking a medication. This graph averages symptom severity in 2-hour windows after each dose.</Text>
       {!loading && (
         <>
+          <CustomDropdown
+            value={selectedMedication}
+            setValue={setSelectedMedication}
+            isFocus={isMedicationFocus}
+            setIsFocus={setIsMedicationFocus}
+            data={Array.from(new Set(combinedMedications.map((m) => ({ label: m.label, value: m.value }))))}
+            placeholder="Select medication"
+            searchPlaceholder="Search..."
+          />
+          <View className="mt-3">
             <CustomDropdown
-                value={selectedMedication}
-                setValue={setSelectedMedication}
-                isFocus={isMedicationFocus}
-                setIsFocus={setIsMedicationFocus}
-                data={Array.from(new Set(combinedMedications.map((m) => ({ label: m.label, value: m.value }))))}
-                placeholder="Select medication"
-                searchPlaceholder="Search..."
+              value={selectedSymptom}
+              setValue={setSelectedSymptom}
+              isFocus={isSymptomFocus}
+              setIsFocus={setIsSymptomFocus}
+              data={Array.from(new Set(combinedSymptoms.map((s) => ({ label: s.label, value: s.value }))))}
+              placeholder="Select symptom"
+              searchPlaceholder="Search..."
             />
-            <View className="mt-3">
-            <CustomDropdown
-                value={selectedSymptom}
-                setValue={setSelectedSymptom}
-                isFocus={isSymptomFocus}
-                setIsFocus={setIsSymptomFocus}
-                data={Array.from(new Set(combinedSymptoms.map((s) => ({ label: s.label, value: s.value }))))}
-                placeholder="Select symptom"
-                searchPlaceholder="Search..."
-            />
-            </View>
+          </View>
         </>
-        )}
-
+      )}
 
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : chartData ? (
-        <LineChart
-          data={chartData}
-          width={containerWidth || Dimensions.get("window").width}
-          height={220}
-          chartConfig={chartConfig}
-          bezier
-          fromZero
-          segments={5}
-          yAxisMin={0}
-          yAxisMax={5}
-          yAxisSuffix="" // Remove any suffix
-          // yAxisInterval={1} // Ensure interval is 1
-          style={{ marginVertical: 8, borderRadius: 10 }}
-          // This is important to ensure axis labels are exactly at 0, 1, 2, 3, 4, 5
-          // formatYLabel={(value) => Math.round(value).toString()}
-        />
+        <View className="pt-3">
+          <LineChart
+            labels={chartData.labels}
+            data={chartData.data}
+            width={containerWidth || 300}
+            height={220}
+            xAxisLabel="Hours After Medication"
+            yAxisLabel="Symptom Severity"
+            lineColor="#3b82f6"
+          />
+        </View>
       ) : (
         <Text className="mt-4 text-gray-500">No data available</Text>
       )}
