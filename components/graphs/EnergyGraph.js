@@ -6,6 +6,7 @@ import LineChart from './LineChart';
 import CustomDropdown from '../CustomDropdown'
 import { fetchUserEnergyLevels } from '../../lib/fetch'
 import { useGlobalContext } from '../../context/GlobalProvider'
+import { convertFirestoreTimestamp } from '../../lib/utility/convertFirestoreTimestamp';
 
 const EnergyGraph = () => {
   const { user } = useGlobalContext();
