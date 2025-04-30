@@ -46,16 +46,23 @@ const Insights = () => {
         format: "png",
         quality: 1,
       });
+
+      const medicationUri = await captureRef(medicationEffectiveness, {
+        format: "png",
+        quality: 1,
+      });
   
       // Combine images into HTML
       const html = `
         <h1>Weekly Health Report</h1>
         <h2>Symptom Severity</h2>
         <img src="${symptomUri}" style="width: 100%" />
-        <h2>Energy Levels</h2>
+        <h2 style="page-break-before: always;">Energy Levels</h2>
         <img src="${energyUri}" style="width: 100%" />
-        <h2>Energy Heat Map</h2>
+        <h2 style="page-break-before: always;">Energy Heat Map</h2>
         <img src="${heatmapUri}" style="width: 100%" />
+        <h2 style="page-break-before: always;">Medication Effectiveness</h2>
+        <img src="${medicationUri}" style="width: 100%" />
       `;
   
       // Convert HTML to PDF

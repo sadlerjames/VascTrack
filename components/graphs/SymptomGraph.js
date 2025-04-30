@@ -257,6 +257,7 @@ const SymptomGraph = () => {
               height={220}
               xAxisLabel={selectedRange === "7d" ? "Days" : "Weeks"}
               yAxisLabel="Severity" 
+              lineColor="#3b82f6"
             />
           </View>
       ) : (

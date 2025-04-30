@@ -251,6 +251,7 @@ const EnergyGraph = () => {
             labels={chartData.labels}
             data={chartData.datasets[0].data.map(d => (d === -1 ? null : d))}
             width={containerWidth > 0 ? containerWidth : 300}
+            lineColor="#3b82f6"
           />
         </View>
 
