@@ -112,31 +112,32 @@ const Medication = () => {
           </View>
 
           <View className="mt-3">
+            {/* Predefined doages */}
             <Text className="font-pbold text-lg">Enter dosage (in mg):</Text>
-            <View className="flex-row justify-between mt-2">
+            <View className="flex-row justify-between gap-2 mt-2">
               <CustomButton
-                title="1mg"
-                handlePress={() => setDosage('1mg')}
-                containerStyles="bg-secondary px-2 py-1 mr-1"
-                textStyles="text-sm"
+                title="1"
+                handlePress={() => setDosage("1")}
+                containerStyles="bg-secondary px-2 py-1 mr-1 flex-1"
+                textStyles="text-lg"
               />
               <CustomButton
-                title="5mg"
-                handlePress={() => setDosage('5mg')}
-                containerStyles="bg-secondary px-2 py-1 mr-1"
-                textStyles="text-sm"
+                title="5"
+                handlePress={() => setDosage("5")}
+                containerStyles="bg-secondary px-2 py-1 mr-1 flex-1"
+                textStyles="text-lg"
               />
               <CustomButton
-                title="10mg"
-                handlePress={() => setDosage('10mg')}
-                containerStyles="bg-secondary px-2 py-1 mr-1"
-                textStyles="text-sm"
+                title="10"
+                handlePress={() => setDosage("10")}
+                containerStyles="bg-secondary px-2 py-1 mr-1 flex-1"
+                textStyles="text-lg"
               />
               <CustomButton
-                title="30mg"
-                handlePress={() => setDosage('30mg')}
-                containerStyles="bg-secondary px-2 py-1"
-                textStyles="text-sm"
+                title="30"
+                handlePress={() => setDosage("30")}
+                containerStyles="bg-secondary px-2 py-1 flex-1"
+                textStyles="text-lg"
               />
             </View>
 

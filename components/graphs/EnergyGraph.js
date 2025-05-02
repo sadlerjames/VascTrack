@@ -6,7 +6,6 @@ import LineChart from './LineChart';
 import CustomDropdown from '../CustomDropdown'
 import { fetchUserEnergyLevels } from '../../lib/fetch'
 import { useGlobalContext } from '../../context/GlobalProvider'
-import { convertFirestoreTimestamp } from '../../lib/utility/convertFirestoreTimestamp';
 
 const EnergyGraph = () => {
   const { user } = useGlobalContext();
@@ -53,6 +52,21 @@ const EnergyGraph = () => {
     };
   };
   
+  const convertFirestoreTimestamp = (timestamp) => {
+    try {
+      if (typeof timestamp === 'string') {
+        const date = new Date(timestamp);
+        if (!isNaN(date.getTime())) return date;
+        throw new Error(`Invalid date string: ${timestamp}`);
+      } else if (timestamp?.seconds) {
+        return new Date(timestamp.seconds * 1000);
+      }
+      throw new Error(`Unknown timestamp format: ${JSON.stringify(timestamp)}`);
+    } catch (error) {
+      console.error("Error parsing date:", error);
+      return new Date();
+    }
+  };
 
   const formatDateLabel = (date) => {
     const daysOfWeek = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -196,6 +210,20 @@ const EnergyGraph = () => {
     }
   }, [energyLevels, selectedRange]);
   
+  const chartConfig = {
+    backgroundGradientFrom: "#f2f2f2",
+    backgroundGradientTo: "#f2f2f2",
+    decimalPlaces: 0,
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    style: { borderRadius: 16 },
+    propsForDots: {
+      r: "6",
+      strokeWidth: "2",
+      stroke: "#f59e0b",
+    },
+  };
+
   return (
     <View 
         className="w-full"

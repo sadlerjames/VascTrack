@@ -13,8 +13,8 @@
 		1874F9481752432183D5E035 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1488F3AD809435F965BF621 /* noop-file.swift */; };
 		1AD584952DB3E1CB0099BE9D /* GoogleService-Info.plist 2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1AD584942DB3E1CB0099BE9D /* GoogleService-Info.plist 2.plist */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		6E19255A4BE4F518B0291A9C /* libPods-VascTrack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D4012FC54B6661C271C04D4 /* libPods-VascTrack.a */; };
 		826AEB5BF2E65B2506C919DD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 54D20740B55DDEFDB8B09F71 /* PrivacyInfo.xcprivacy */; };
-		96905EF65AED1B983A6B3ABC /* libPods-VascTrack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-VascTrack.a */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 /* End PBXBuildFile section */
@@ -26,11 +26,11 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = VascTrack/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = VascTrack/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = VascTrack/main.m; sourceTree = "<group>"; };
+		1AA8EB08CD9092F2F205AA6D /* Pods-VascTrack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VascTrack.debug.xcconfig"; path = "Target Support Files/Pods-VascTrack/Pods-VascTrack.debug.xcconfig"; sourceTree = "<group>"; };
 		1AD584942DB3E1CB0099BE9D /* GoogleService-Info.plist 2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist 2.plist"; sourceTree = "<group>"; };
 		54D20740B55DDEFDB8B09F71 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = VascTrack/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-VascTrack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VascTrack.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6C2E3173556A471DD304B334 /* Pods-VascTrack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VascTrack.debug.xcconfig"; path = "Target Support Files/Pods-VascTrack/Pods-VascTrack.debug.xcconfig"; sourceTree = "<group>"; };
-		7A4D352CD337FB3A3BF06240 /* Pods-VascTrack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VascTrack.release.xcconfig"; path = "Target Support Files/Pods-VascTrack/Pods-VascTrack.release.xcconfig"; sourceTree = "<group>"; };
+		8D4012FC54B6661C271C04D4 /* libPods-VascTrack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VascTrack.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		970339BE02AC8DF1FACE71D3 /* Pods-VascTrack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VascTrack.release.xcconfig"; path = "Target Support Files/Pods-VascTrack/Pods-VascTrack.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = VascTrack/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BA18370296014252A7AD4749 /* VascTrack-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "VascTrack-Bridging-Header.h"; path = "VascTrack/VascTrack-Bridging-Header.h"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
@@ -44,7 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96905EF65AED1B983A6B3ABC /* libPods-VascTrack.a in Frameworks */,
+				6E19255A4BE4F518B0291A9C /* libPods-VascTrack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,7 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				58EEBF8E8E6FB1BC6CAF49B5 /* libPods-VascTrack.a */,
+				8D4012FC54B6661C271C04D4 /* libPods-VascTrack.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -128,8 +128,8 @@
 		D65327D7A22EEC0BE12398D9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6C2E3173556A471DD304B334 /* Pods-VascTrack.debug.xcconfig */,
-				7A4D352CD337FB3A3BF06240 /* Pods-VascTrack.release.xcconfig */,
+				1AA8EB08CD9092F2F205AA6D /* Pods-VascTrack.debug.xcconfig */,
+				970339BE02AC8DF1FACE71D3 /* Pods-VascTrack.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -149,14 +149,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "VascTrack" */;
 			buildPhases = (
-				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
+				3ED1A79ED5D6994A4425C1CA /* [CP] Check Pods Manifest.lock */,
 				EDB72085A2A50678D7B45D45 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				CFB85F4B6B296AB25DA1F3B6 /* [CP] Embed Pods Frameworks */,
+				FB973D2D0E5F00E9FBACB2C6 /* [CP] Embed Pods Frameworks */,
+				11815CEAD707A4773A374234 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -229,29 +229,7 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" \"$PROJECT_ROOT\" ios absolute | tail -n 1)\"\nfi\n\nif [[ -z \"$CLI_PATH\" ]]; then\n  # Use Expo CLI\n  export CLI_PATH=\"$(\"$NODE_BINARY\" --print \"require.resolve('@expo/cli', { paths: [require.resolve('expo/package.json')] })\")\"\nfi\nif [[ -z \"$BUNDLE_COMMAND\" ]]; then\n  # Default Expo CLI command for bundling\n  export BUNDLE_COMMAND=\"export:embed\"\nfi\n\n# Source .xcode.env.updates if it exists to allow\n# SKIP_BUNDLING to be unset if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.updates\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.updates\"\nfi\n# Source local changes to allow overrides\n# if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n\n";
 		};
-		08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-VascTrack-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
+		11815CEAD707A4773A374234 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -299,22 +277,26 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VascTrack/Pods-VascTrack-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CFB85F4B6B296AB25DA1F3B6 /* [CP] Embed Pods Frameworks */ = {
+		3ED1A79ED5D6994A4425C1CA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-VascTrack/Pods-VascTrack-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			inputFileListPaths = (
 			);
-			name = "[CP] Embed Pods Frameworks";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+				"$(DERIVED_FILE_DIR)/Pods-VascTrack-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VascTrack/Pods-VascTrack-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EDB72085A2A50678D7B45D45 /* [Expo] Configure project */ = {
@@ -336,6 +318,24 @@
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-VascTrack/expo-configure-project.sh\"\n";
 		};
+		FB973D2D0E5F00E9FBACB2C6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VascTrack/Pods-VascTrack-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VascTrack/Pods-VascTrack-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -355,7 +355,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C2E3173556A471DD304B334 /* Pods-VascTrack.debug.xcconfig */;
+			baseConfigurationReference = 1AA8EB08CD9092F2F205AA6D /* Pods-VascTrack.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -392,7 +392,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A4D352CD337FB3A3BF06240 /* Pods-VascTrack.release.xcconfig */;
+			baseConfigurationReference = 970339BE02AC8DF1FACE71D3 /* Pods-VascTrack.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

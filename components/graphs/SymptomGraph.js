@@ -6,7 +6,6 @@ import CustomDropdown from '../CustomDropdown'
 import { fetchCustomSymptoms, fetchUserSymptoms } from '../../lib/fetch'
 import { predefinedSymptoms } from '../../constants/symptomData'
 import { useGlobalContext } from '../../context/GlobalProvider'
-import { convertFirestoreTimestamp } from '../../lib/utility/convertFirestoreTimestamp';
 
 const SymptomGraph = () => {
   const { user } = useGlobalContext();
@@ -42,6 +41,28 @@ const SymptomGraph = () => {
     ...customSymptoms.map(symptom => ({ label: symptom, value: symptom }))
   ];
 
+  // Convert Firestore timestamp to JavaScript Date
+  const convertFirestoreTimestamp = (timestamp) => {
+    try {
+      if (typeof timestamp === 'string') {
+        const date = new Date(timestamp);
+        
+        // Check if the date is valid
+        if (!isNaN(date.getTime())) {
+          return date;
+        }
+        throw new Error(`Invalid date string: ${timestamp}`);
+      } else if (timestamp && typeof timestamp === 'object' && 'seconds' in timestamp) {
+        // Handle Firestore timestamp format
+        return new Date(timestamp.seconds * 1000);
+      }
+      throw new Error(`Unknown timestamp format: ${JSON.stringify(timestamp)}`);
+    } catch (error) {
+      console.error("Error parsing date:", error);
+      // Return fallback date instead of an invalid date
+      return new Date(); // Current date as fallback
+    }
+  };
 
   // Format date as day of week
   const formatDateLabel = (date) => {
